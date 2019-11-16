@@ -1,1 +1,0 @@
-https://github.com/AlexWilton/Risk-World-Domination-Game/blob/master/data/default_map.json
