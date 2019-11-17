@@ -16,6 +16,7 @@ class Country:
         self.name = name
         self.continent = list()
         self.neighbors = list()
+        self.owner = None
 
     def __str__(self):
         return f'Country {self.name} -- id no. {self.id} is in continent {self.continent}\n' \
