@@ -24,22 +24,19 @@ from countries import data
 
 continent_goals = [['Asia', 'South America'], ['Asia', 'Africa'], ['North America', 'Africa'],
                    ['North America', 'Asia', 'Australia']]
+continent_goals_keys = [['4', '1'], ['4', '3'], ['0', '3'], ['0', '4', '5']]
 types = ['continent', 'destroy', 'territory18', 'territory24']
 possible_enemies = ['black', 'white', 'blue', 'red', 'yellow', 'green']
 
 
 def generate_continent_goals():
     ctn_goals = list()
-    for each in continent_goals:
+    for each in continent_goals_keys:
         to_conquer = list()
-        for k, v in data['continent_names'].items():
-            if v in each:
-                to_conquer += data['continents'][k]
+        for e in each:
+            to_conquer += data['continents'][e]
         ctn_goals.append(to_conquer)
     return ctn_goals
-
-
-continent_countries = generate_continent_goals()
 
 
 class Goal:
@@ -75,15 +72,14 @@ class Goal:
 
 def draw_n_goals(n, goal_types, enemies):
     countries = generate_continent_goals()
+    random.shuffle(countries)
     results = list()
     for i in range(n):
         _type = random.choice(goal_types)
         if _type == 'continent':
             if len(countries) > 0:
-                random.shuffle(countries)
-                c = countries.pop()
                 g = Goal(_type)
-                g.to_conquer = c
+                g.to_conquer = countries.pop()
             else:
                 g = Goal(random.choice(['territory18', 'territory24']))
         elif _type == 'destroy':
@@ -98,4 +94,8 @@ def draw_n_goals(n, goal_types, enemies):
 
 if __name__ == '__main__':
     # cts = load_data()
+    # a = generate_continent_goals()
+    # for i in a:
+    #     print(i)
     goals = draw_n_goals(6, types, possible_enemies)
+    [print(c.to_conquer) for c in goals]

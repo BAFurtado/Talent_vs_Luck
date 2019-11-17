@@ -1,7 +1,8 @@
-from countries import World
-from players import Player
-from goals import draw_n_goals, types, possible_enemies
 from numpy import random
+
+from countries import World
+from goals import draw_n_goals, types, possible_enemies, Goal
+from players import Player
 
 
 def gen_world(num_players):
@@ -13,11 +14,11 @@ def gen_world(num_players):
         p.name = enemies[i]
         while p.goal is None:
             random.shuffle(gls)
-            g = random.choice(gls, replace=False)
+            g = gls.pop()
             if g.enemy != p.name:
                 p.goal = g
             else:
-                gls.append(g)
+                p.goal = Goal(random.choice(['territory18', 'territory24']))
         w.players.append(p)
     return w
 
