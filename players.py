@@ -1,10 +1,10 @@
 
 
 class Player:
-    def __init__(self, id, name, strategy):
-        self.id = id
-        self.name = name
-        self.strategy = strategy
+    def __init__(self, _id):
+        self.id = _id
+        self.name = None
+        self.strategy = None
         self.goal = None
         self.my_countries = list()
 
@@ -17,6 +17,9 @@ class Player:
     def num_countries(self):
         return len(self.my_countries)
 
+    def full_continent(self):
+        pass
+
 
 if __name__ == '__main__':
-    p1 = Player(0, 'black', 0)
+    p1 = Player(0)

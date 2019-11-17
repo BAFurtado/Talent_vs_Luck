@@ -40,6 +40,15 @@ def load_data():
     return countries
 
 
+class World:
+    def __init__(self):
+        self.countries = load_data()
+        self.data = data
+        self.players = list()
+        self.turn = 0
+        self.current_player = None
+
+
 if __name__ == '__main__':
     cts = load_data()
     print(cts[0], cts[-1])

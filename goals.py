@@ -18,16 +18,34 @@ iii) Occupy 18 territories with at least 2 armies in each territory.
 
 iv) Occupy 24 territories (no restriction to 2 or more armies in each). """
 
-from countries import load_data, data
+from numpy import random
+
+from countries import data
 
 continent_goals = [['Asia', 'South America'], ['Asia', 'Africa'], ['North America', 'Africa'],
                    ['North America', 'Asia', 'Australia']]
+types = ['continent', 'destroy', 'territory18', 'territory24']
+possible_enemies = ['black', 'white', 'blue', 'red', 'yellow', 'green']
 
 
-class Goals:
-    def __init__(self):
-        self.type = None
-        self.enemy = None
+def generate_continent_goals():
+    ctn_goals = list()
+    for each in continent_goals:
+        to_conquer = list()
+        for k, v in data['continent_names'].items():
+            if v in each:
+                to_conquer += data['continents'][k]
+        ctn_goals.append(to_conquer)
+    return ctn_goals
+
+
+continent_countries = generate_continent_goals()
+
+
+class Goal:
+    def __init__(self, _type=None, enemy=None):
+        self.type = _type
+        self.enemy = enemy
         self.to_conquer = list()
 
     def update_goal(self, enemy, countries):
@@ -55,22 +73,29 @@ class Goals:
             return False
 
 
-def generate_continent_goals():
-    goals = list()
-    for each in continent_goals:
-        to_conquer = list()
-        for k, v in data['continent_names'].items():
-            if v in each:
-                to_conquer += data['continents'][k]
-        goals.append(to_conquer)
-    return goals
-
-
-goals_types = ['continent', 'destroy', 'territory18', 'territory24']
-continent_goals_countries = generate_continent_goals()
-enemies = ['black', 'white', 'blue', 'red', 'yellow', 'green']
+def draw_n_goals(n, goal_types, enemies):
+    countries = generate_continent_goals()
+    results = list()
+    for i in range(n):
+        _type = random.choice(goal_types)
+        if _type == 'continent':
+            if len(countries) > 0:
+                random.shuffle(countries)
+                c = countries.pop()
+                g = Goal(_type)
+                g.to_conquer = c
+            else:
+                g = Goal(random.choice(['territory18', 'territory24']))
+        elif _type == 'destroy':
+            random.shuffle(enemies)
+            e = random.choice(enemies, replace=False)
+            g = Goal(_type, e)
+        else:
+            g = Goal(_type)
+        results.append(g)
+    return results
 
 
 if __name__ == '__main__':
     # cts = load_data()
-    pass
+    goals = draw_n_goals(6, types, possible_enemies)
