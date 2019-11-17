@@ -53,7 +53,7 @@ class Goals:
             if len(conquered) >= len(to_conquer):
                 return True
             return False
-        
+
 
 def generate_continent_goals():
     goals = list()
