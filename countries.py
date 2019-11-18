@@ -10,20 +10,6 @@ with open('map.json', 'r') as f:
     data = json.load(f)
 
 
-class Country:
-    def __init__(self, id, name):
-        self.id = id
-        self.name = name
-        self.continent = list()
-        self.neighbors = list()
-        self.owner = None
-        self.army = 0
-
-    def __str__(self):
-        return f'Country {self.name} -- id no. {self.id} is in continent {self.continent}\n' \
-               f'My neighbors are {self.neighbors}\n'
-
-
 def load_data():
     countries = list()
     for each in data['country_names'].items():
@@ -40,6 +26,20 @@ def load_data():
     return countries
 
 
+class Country:
+    def __init__(self, id, name):
+        self.id = id
+        self.name = name
+        self.continent = list()
+        self.neighbors = list()
+        self.owner = None
+        self.army = 0
+
+    def __str__(self):
+        return f'Country {self.name} -- id no. {self.id} is in continent {self.continent}\n' \
+               f'My neighbors are {self.neighbors}\n'
+
+
 class World:
     def __init__(self):
         self.countries = load_data()
@@ -47,6 +47,14 @@ class World:
         self.players = list()
         self.turn = 0
         self.current_player = None
+
+    def deploy(self):
+        if self.turn == 0:
+            i = 0
+            while i < len(self.countries):
+                for p in self.players:
+                    p.add_country(self.countries[i])
+                    i += 1
 
 
 if __name__ == '__main__':
