@@ -48,13 +48,18 @@ class World:
         self.turn = 0
         self.current_player = None
 
-    def deploy(self):
+    def distribute_countries(self):
         if self.turn == 0:
             i = 0
             while i < len(self.countries):
                 for p in self.players:
                     p.add_country(self.countries[i])
                     i += 1
+
+    def deploy_army(self):
+        for p in self.players:
+            armies = p.calculate_armies(self)
+
 
 
 if __name__ == '__main__':

@@ -24,6 +24,7 @@ class Player:
     def calculate_army(self, world):
         armies = self.full_continent(world)
         armies['general'] = self.num_countries() // 2
+        return armies
 
     def full_continent(self, world):
         armies = dict()
@@ -32,6 +33,9 @@ class Player:
             if set(v).issubset(cts):
                 armies[k] = world.data['continent_values'][k]
         return armies
+
+    def allocate_armies(self):
+        pass
 
 
 if __name__ == '__main__':

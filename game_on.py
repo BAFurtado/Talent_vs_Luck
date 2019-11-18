@@ -3,7 +3,6 @@ from numpy import random
 from countries import World
 from goals import draw_n_goals, types, possible_enemies, Goal
 from players import Player
-from move import deploy
 
 
 def gen_world(num_players):
@@ -25,7 +24,7 @@ def gen_world(num_players):
 
 def main(num_players):
     w = gen_world(num_players)
-    w = deploy(w)
+    w.distribute_countries()
     return w
 
 
