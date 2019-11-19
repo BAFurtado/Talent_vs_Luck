@@ -6,7 +6,9 @@
 
 import json
 
-with open('map.json', 'r') as f:
+import networkx as nx
+
+with open('utils/map.json', 'r') as f:
     data = json.load(f)
 
 
@@ -47,19 +49,25 @@ class World:
         self.players = list()
         self.turn = 0
         self.current_player = None
+        self.net = self.generate_map()
+
+    def generate_map(self):
+        G = nx.Graph()
+        G.add_nodes_from([c.id for c in self.countries])
+        G.add_edges_from(self.data['connections'])
+        return G
 
     def distribute_countries(self):
         if self.turn == 0:
             i = 0
             while i < len(self.countries):
                 for p in self.players:
-                    p.add_country(self.countries[i])
+                    p.add_country(self, self.countries[i])
                     i += 1
 
     def deploy_army(self):
         for p in self.players:
             armies = p.calculate_armies(self)
-
 
 
 if __name__ == '__main__':

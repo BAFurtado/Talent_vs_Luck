@@ -2,7 +2,7 @@ from itertools import groupby
 
 import matplotlib.pyplot as plt
 
-from dice import roll
+from battle import roll
 
 
 def probs(n):

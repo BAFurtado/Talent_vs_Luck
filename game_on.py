@@ -1,3 +1,5 @@
+import matplotlib.pyplot as plt
+import networkx as nx
 from numpy import random
 
 from countries import World
@@ -30,3 +32,6 @@ def main(num_players):
 
 if __name__ == '__main__':
     w1 = main(6)
+    nx.draw(w1.net, with_labels=True, node_color=[w1.net.nodes[i]['owner'] for i in w1.net.nodes])
+    plt.show()
+
