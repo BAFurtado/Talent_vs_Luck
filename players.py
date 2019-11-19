@@ -2,8 +2,6 @@ from collections import Counter
 
 import networkx as nx
 
-from numpy import random
-
 
 class Player:
     def __init__(self, _id):
@@ -51,28 +49,30 @@ class Player:
         return armies
 
     def define_priorities(self, world):
-        neighbors = list(set([key for c in self.my_countries for key in world.net[c.id].keys()]))
-        random.shuffle(neighbors)
+        c_ids = [c.id for c in self.my_countries]
+        neighbors = [n for c in self.my_countries for n in c.neighbors if n not in c_ids]
+
         # Independent of strategy, seek continent completion first
         priority = list()
         for i in self.ordered_continent(world):
             for j in world.data['continents'][i]:
-                if j in neighbors:
+                if (j in neighbors) and (j not in c_ids):
                     priority.append(j)
-        # Completing the rest of the list.
+        # Completing the rest of the list
         for each in neighbors:
             if each not in priority:
                 priority.append(each)
-        return priority
 
-    def find_best_own_near_priorities(self):
-        pass
+        # # Which priorities have the most neighbors
+        most_degree = {}
+        # most_neighbors = [{c.id: world.net.degree[c.id]} for c in self.my_countries]
+        # neigh_priority = sorted(most_neighbors, key=(lambda k: most_neighbors[k]), reverse=True)
+        return neighbors, priority
 
     def allocate_armies(self, world):
         armies = self.calculate_army(world)
-        priority = self.define_priorities(world)
-        print(armies, priority)
-
+        neighbors, priority = self.define_priorities(world)
+        print(self.id, [world.net.degree[i] for i in priority])
 
 
 if __name__ == '__main__':

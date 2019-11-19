@@ -7,9 +7,7 @@
 import json
 
 import networkx as nx
-
 from numpy import random
-
 
 with open('utils/map.json', 'r') as f:
     data = json.load(f)

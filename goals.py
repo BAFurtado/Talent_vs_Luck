@@ -26,7 +26,7 @@ continent_goals = [['Asia', 'South America'], ['Asia', 'Africa'], ['North Americ
                    ['North America', 'Asia', 'Australia']]
 continent_goals_keys = [['4', '1'], ['4', '3'], ['0', '3'], ['0', '4', '5']]
 types = ['continent', 'destroy', 'territory18', 'territory24']
-possible_enemies = ['black', 'white', 'blue', 'red', 'yellow', 'green']
+possible_enemies = ['sienna', 'silver', 'cyan', 'red', 'goldenrod', 'seagreen']
 
 
 def generate_continent_goals():
