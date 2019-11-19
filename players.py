@@ -2,6 +2,8 @@ from collections import Counter
 
 import networkx as nx
 
+from numpy import random
+
 
 class Player:
     def __init__(self, _id):
@@ -41,7 +43,7 @@ class Player:
 
     def ordered_continent(self, world):
         stats = self.prop_continent(world)
-        return sorted(stats.items(), key=lambda key: stats[key])
+        return sorted(stats, key=(lambda k: stats[k]), reverse=True)
 
     def calculate_army(self, world):
         armies = self.full_continent(world)
@@ -49,12 +51,28 @@ class Player:
         return armies
 
     def define_priorities(self, world):
-        neighbors = set([key for c in self.my_countries for key in world.net[c.id].keys()])
-        if self.strategy == 'random':
-            return neighbors
+        neighbors = list(set([key for c in self.my_countries for key in world.net[c.id].keys()]))
+        random.shuffle(neighbors)
+        # Independent of strategy, seek continent completion first
+        priority = list()
+        for i in self.ordered_continent(world):
+            for j in world.data['continents'][i]:
+                if j in neighbors:
+                    priority.append(j)
+        # Completing the rest of the list.
+        for each in neighbors:
+            if each not in priority:
+                priority.append(each)
+        return priority
 
-    def allocate_armies(self):
+    def find_best_own_near_priorities(self):
         pass
+
+    def allocate_armies(self, world):
+        armies = self.calculate_army(world)
+        priority = self.define_priorities(world)
+        print(armies, priority)
+
 
 
 if __name__ == '__main__':

@@ -8,6 +8,9 @@ import json
 
 import networkx as nx
 
+from numpy import random
+
+
 with open('utils/map.json', 'r') as f:
     data = json.load(f)
 
@@ -17,7 +20,7 @@ def load_data():
     for each in data['country_names'].items():
         c = Country(int(each[0]), each[1])
         for key in data['continents'].keys():
-            if each[0] in data['continents'][key]:
+            if int(each[0]) in data['continents'][key]:
                 c.continent = key
                 break
         for conn in data['connections']:
@@ -58,6 +61,7 @@ class World:
         return G
 
     def distribute_countries(self):
+        random.shuffle(self.countries)
         if self.turn == 0:
             i = 0
             while i < len(self.countries):
@@ -67,7 +71,7 @@ class World:
 
     def deploy_army(self):
         for p in self.players:
-            armies = p.calculate_armies(self)
+            p.allocate_armies(self)
 
 
 if __name__ == '__main__':
