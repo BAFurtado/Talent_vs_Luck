@@ -77,7 +77,14 @@ class Player:
     def allocate_armies(self, world):
         armies = self.calculate_army(world)
         attack_priority = self.define_priorities(world)
-        print(self.id, attack_priority)
+        for a in attack_priority:
+            for c in self.my_countries:
+                if c.id == a[0]:
+                    max_territory = 3
+                    while armies['general'] > 0 and max_territory > 0:
+                        c.army += 1
+                        max_territory -= 1
+                        armies['general'] -= 1
 
 
 if __name__ == '__main__':
