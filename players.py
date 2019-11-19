@@ -1,3 +1,5 @@
+from collections import Counter
+
 import networkx as nx
 
 
@@ -24,21 +26,32 @@ class Player:
     def num_countries(self):
         return len(self.my_countries)
 
+    def full_continent(self, world):
+        armies = dict()
+        stats = self.prop_continent(world)
+        if 1 in stats.values():
+            for k, v in stats.items():
+                if v == 1:
+                    armies[k] = stats[k]
+        return armies
+
+    def prop_continent(self, world):
+        prop = Counter([i.continent for i in self.my_countries])
+        return {k: prop[k] / len(world.data['continents'][k]) for k in prop.keys()}
+
+    def ordered_continent(self, world):
+        stats = self.prop_continent(world)
+        return sorted(stats.items(), key=lambda key: stats[key])
+
     def calculate_army(self, world):
         armies = self.full_continent(world)
         armies['general'] = self.num_countries() // 2
         return armies
 
-    def full_continent(self, world):
-        armies = dict()
-        cts = [str(x.id) for x in self.my_countries]
-        for k, v in world.data['continents'].items():
-            if set(v).issubset(cts):
-                armies[k] = world.data['continent_values'][k]
-        return armies
-
     def define_priorities(self, world):
-        pass
+        neighbors = set([key for c in self.my_countries for key in world.net[c.id].keys()])
+        if self.strategy == 'random':
+            return neighbors
 
     def allocate_armies(self):
         pass

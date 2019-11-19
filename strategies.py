@@ -1,6 +1,1 @@
-strategies = {
-    0:
-        {
-
-        }
-}
+strategies = ['random', 'minimalist', 'blitz']
