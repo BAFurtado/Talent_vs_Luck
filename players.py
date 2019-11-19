@@ -63,16 +63,21 @@ class Player:
             if each not in priority:
                 priority.append(each)
 
-        # # Which priorities have the most neighbors
-        most_degree = {}
-        # most_neighbors = [{c.id: world.net.degree[c.id]} for c in self.my_countries]
-        # neigh_priority = sorted(most_neighbors, key=(lambda k: most_neighbors[k]), reverse=True)
-        return neighbors, priority
+        # Which country to attack with which priority
+        tup_results = [(c.id, p) for p in priority for c in self.my_countries if p in c.neighbors]
+        # Eliminating double targets
+        targets = list()
+        attack_priority = list()
+        for each in tup_results:
+            if each[1] not in targets:
+                targets.append(each[1])
+                attack_priority.append(each)
+        return attack_priority
 
     def allocate_armies(self, world):
         armies = self.calculate_army(world)
-        neighbors, priority = self.define_priorities(world)
-        print(self.id, [world.net.degree[i] for i in priority])
+        attack_priority = self.define_priorities(world)
+        print(self.id, attack_priority)
 
 
 if __name__ == '__main__':
