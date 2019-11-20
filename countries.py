@@ -71,6 +71,11 @@ class World:
         for p in self.players:
             p.allocate_armies(self)
 
+    def turn(self):
+        for p in self.players:
+            p.attack(self)
+        self.turn += 1
+
 
 if __name__ == '__main__':
     cts = load_data()

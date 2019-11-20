@@ -1,5 +1,5 @@
 from collections import Counter
-
+import battle
 import networkx as nx
 
 
@@ -83,6 +83,18 @@ class Player:
                 self.my_countries[a[0]].army += 1
                 max_territory -= 1
                 armies['general'] -= 1
+        # Allocate continent army
+
+    def attack(self, world):
+        if world.turn != 0:
+            self.allocate_armies(world)
+        attack_priority = self.define_priorities(world)
+        for a in attack_priority:
+            attacker = self.my_countries[a[0]]
+            if attacker.army > 1:
+                defender = world.countries # dictionary
+                battle.battle(1, 1)
+
 
 
 if __name__ == '__main__':

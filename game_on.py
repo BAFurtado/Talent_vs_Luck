@@ -30,12 +30,14 @@ def main(num_players):
     w = gen_world(num_players)
     w.distribute_countries()
     w.deploy_army()
+    for i in range(5):
+        w.turn()
     return w
 
 
 if __name__ == '__main__':
     w1 = main(6)
     p1 = w1.players[0]
-    nx.draw(w1.net, with_labels=True, pos=nx.kamada_kawai_layout(w1.net),
-            node_color=[w1.net.nodes[i]['owner'] for i in w1.net.nodes])
+    nx.draw_networkx(w1.net, with_labels=True, pos=nx.kamada_kawai_layout(w1.net),
+                     node_color=[w1.net.nodes[i]['owner'] for i in w1.net.nodes], tight_layout=False)
     plt.show()
