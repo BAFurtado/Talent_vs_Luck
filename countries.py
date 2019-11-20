@@ -7,14 +7,13 @@
 import json
 
 import networkx as nx
-from numpy import random
 
 with open('utils/map.json', 'r') as f:
     data = json.load(f)
 
 
 def load_data():
-    countries = list()
+    countries = dict()
     for each in data['country_names'].items():
         c = Country(int(each[0]), each[1])
         for key in data['continents'].keys():
@@ -25,7 +24,7 @@ def load_data():
             if c.id in conn:
                 c.neighbors.append(conn)
         c.neighbors = [j for i in c.neighbors for j in i if j != c.id]
-        countries.append(c)
+        countries[c.id] = c
     return countries
 
 
@@ -54,12 +53,11 @@ class World:
 
     def generate_map(self):
         G = nx.Graph()
-        G.add_nodes_from([c.id for c in self.countries])
+        G.add_nodes_from(self.countries.keys())
         G.add_edges_from(self.data['connections'])
         return G
 
     def distribute_countries(self):
-        random.shuffle(self.countries)
         if self.turn == 0:
             i = 0
             while i < len(self.countries):
@@ -71,7 +69,8 @@ class World:
         for p in self.players:
             p.allocate_armies(self)
 
-    def turn(self):
+    def play_turn(self):
+        print(f'Playing turn {self.turn}')
         for p in self.players:
             p.attack(self)
         self.turn += 1

@@ -1,6 +1,8 @@
 from collections import Counter
-import battle
+
 import networkx as nx
+
+import battle
 
 
 class Player:
@@ -92,9 +94,15 @@ class Player:
         for a in attack_priority:
             attacker = self.my_countries[a[0]]
             if attacker.army > 1:
-                defender = world.countries # dictionary
-                battle.battle(1, 1)
-
+                defender = world.countries[a[1]]
+                # Attack until winning or exhausting army
+                a, d = battle.battle(attacker.army, defender.army)
+                if d == 0:
+                    defender.owner.remove_country(world, defender)
+                    self.add_country(world, defender)
+                else:
+                    attacker.army = a
+                    defender.army = d
 
 
 if __name__ == '__main__':
