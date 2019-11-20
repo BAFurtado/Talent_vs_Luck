@@ -51,7 +51,7 @@ class Goal:
 
     def check_goal(self, player):
         if self.type == 'territory18':
-            if len([c for c in player.my_countries if player.my_countries.army > 1]) > 17:
+            if len([c for c in player.my_countries.values() if player.my_countries.army > 1]) > 17:
                 return True
             return False
         elif self.type == 'territory24':
@@ -63,9 +63,7 @@ class Goal:
                 return True
             return False
         else:
-            conquered = [c.id for c in player.my_countries]
-            to_conquer = [c for c in conquered if c in self.to_conquer]
-            if len(conquered) >= len(to_conquer):
+            if set(self.to_conquer).issubset(set(player.my_countries.keys())):
                 return True
             return False
 

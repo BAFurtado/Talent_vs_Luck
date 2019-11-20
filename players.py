@@ -9,16 +9,16 @@ class Player:
         self.name = None
         self.strategy = None
         self.goal = None
-        self.my_countries = list()
+        self.my_countries = dict()
 
     def add_country(self, world, country, army=1):
-        self.my_countries.append(country)
+        self.my_countries[country.id] = country
         country.owner = self
         country.army = army
         nx.set_node_attributes(world.net, {country.id: {'owner': self.name}})
 
     def remove_country(self, world, country):
-        self.my_countries.remove(country)
+        self.my_countries.pop(country, None)
         country.owner = None
         country.army = 0
         nx.set_node_attributes(world.net, {country.id: {'owner': None}})
@@ -36,7 +36,7 @@ class Player:
         return armies
 
     def prop_continent(self, world):
-        prop = Counter([i.continent for i in self.my_countries])
+        prop = Counter([i.continent for i in self.my_countries.values()])
         return {k: prop[k] / len(world.data['continents'][k]) for k in prop.keys()}
 
     def ordered_continent(self, world):
@@ -49,8 +49,8 @@ class Player:
         return armies
 
     def define_priorities(self, world):
-        c_ids = [c.id for c in self.my_countries]
-        neighbors = [n for c in self.my_countries for n in c.neighbors if n not in c_ids]
+        c_ids = self.my_countries.keys()
+        neighbors = [n for c in self.my_countries.values() for n in c.neighbors if n not in c_ids]
 
         # Independent of strategy, seek continent completion first
         priority = list()
@@ -64,7 +64,7 @@ class Player:
                 priority.append(each)
 
         # Which country to attack with which priority
-        tup_results = [(c.id, p) for p in priority for c in self.my_countries if p in c.neighbors]
+        tup_results = [(c.id, p) for p in priority for c in self.my_countries.values() if p in c.neighbors]
         # Eliminating double targets
         targets = list()
         attack_priority = list()
@@ -78,13 +78,11 @@ class Player:
         armies = self.calculate_army(world)
         attack_priority = self.define_priorities(world)
         for a in attack_priority:
-            for c in self.my_countries:
-                if c.id == a[0]:
-                    max_territory = 3
-                    while armies['general'] > 0 and max_territory > 0:
-                        c.army += 1
-                        max_territory -= 1
-                        armies['general'] -= 1
+            max_territory = 3
+            while armies['general'] > 0 and max_territory > 0:
+                self.my_countries[a[0]].army += 1
+                max_territory -= 1
+                armies['general'] -= 1
 
 
 if __name__ == '__main__':
