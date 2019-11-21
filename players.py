@@ -2,6 +2,7 @@ from collections import Counter
 
 import networkx as nx
 from numpy import random
+
 import battle
 
 

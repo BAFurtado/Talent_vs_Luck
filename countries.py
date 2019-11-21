@@ -48,8 +48,8 @@ class World:
         self.data = data
         self.players = list()
         self.turn = 0
-        self.current_player = None
         self.net = self.generate_map()
+        self.on = True
 
     def generate_map(self):
         G = nx.Graph()
@@ -70,10 +70,20 @@ class World:
             p.allocate_armies(self)
 
     def play_turn(self):
-        print(f'Playing turn {self.turn}')
-        for p in self.players:
-            p.attack(self)
-        self.turn += 1
+        while self.on:
+            print(f'Playing turn {self.turn}')
+            for p in self.players:
+                p.attack(self)
+                # Check Winner!
+                p.goal.update_goal(self.countries)
+                if p.goal.check_goal(p):
+                    print(f'{p.name.capitalize()} is the WINNER!\n'
+                          f'Its goal was {p.goal.type} and \n'
+                          f'its enemy was {p.goal.enemy}\n'
+                          f'He had {sum([c.army for c in p.my_countries.values()])} armies')
+                    self.on = False
+                    return
+            self.turn += 1
 
 
 if __name__ == '__main__':

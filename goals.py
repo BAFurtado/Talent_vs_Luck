@@ -45,13 +45,13 @@ class Goal:
         self.enemy = enemy
         self.to_conquer = list()
 
-    def update_goal(self, enemy, countries):
+    def update_goal(self, countries):
         if self.type == 'destroy':
-            self.to_conquer = [c for c in countries if c.owner == enemy]
+            self.to_conquer = [c for c in countries.values() if c.owner.name == self.enemy]
 
     def check_goal(self, player):
         if self.type == 'territory18':
-            if len([c for c in player.my_countries.values() if player.my_countries.army > 1]) > 17:
+            if len([c for c in player.my_countries.values() if c.army > 1]) > 17:
                 return True
             return False
         elif self.type == 'territory24':

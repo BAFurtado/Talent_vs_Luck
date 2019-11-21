@@ -1,8 +1,7 @@
 import matplotlib.pyplot as plt
 import networkx as nx
-from numpy import random
-
 from matplotlib import animation
+from numpy import random
 
 import strategies
 from countries import World
@@ -34,13 +33,14 @@ def update(number_frames_i, world, ax):
     ax.set_title(f'Turn {world.turn}')
     world.play_turn()
     return nx.draw_networkx(world.net, with_labels=True, pos=nx.kamada_kawai_layout(world.net),
-                     node_color=[world.net.nodes[i]['owner'] for i in world.net.nodes], tight_layout=False)
+                            node_color=[world.net.nodes[i]['owner'] for i in world.net.nodes], tight_layout=False)
 
 
 def animating(world):
     fig, ax = plt.subplots()
     ani = animation.FuncAnimation(fig, update, frames=25, interval=600,
                                   fargs=(world, ax))
+
     ani.save('game.gif', writer='ImageMagick')
     plt.show()
 
