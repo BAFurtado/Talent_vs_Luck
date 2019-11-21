@@ -99,6 +99,7 @@ class Player:
                 a, d = battle.battle(attacker.army, defender.army)
                 if d == 0:
                     defender.owner.remove_country(world, defender)
+                    # Check number of armies to pass
                     self.add_country(world, defender)
                 else:
                     attacker.army = a

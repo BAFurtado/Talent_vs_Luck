@@ -28,18 +28,20 @@ def gen_world(num_players):
     return w
 
 
-def update(num, G, world, ax):
+def update(number_frames_i, world, ax):
     ax.clear()
+    # Set the title
+    ax.set_title(f'Turn {world.turn}')
     world.play_turn()
-    nx.draw_networkx(G, with_labels=True, pos=nx.kamada_kawai_layout(G),
-                     node_color=[G.nodes[i]['owner'] for i in G.nodes], tight_layout=False)
+    return nx.draw_networkx(world.net, with_labels=True, pos=nx.kamada_kawai_layout(world.net),
+                     node_color=[world.net.nodes[i]['owner'] for i in world.net.nodes], tight_layout=False)
 
 
 def animating(world):
     fig, ax = plt.subplots()
-    G = world.net
-    ani = animation.FuncAnimation(fig, update, frames=20, fargs=(G, world, ax))
-    ani.save('game.gif', writer='imagemagick')
+    ani = animation.FuncAnimation(fig, update, frames=5, interval=600,
+                                  fargs=(world, ax))
+    ani.save('game.gif', writer='ImageMagick')
     plt.show()
 
 
@@ -47,6 +49,7 @@ def main(num_players):
     w = gen_world(num_players)
     w.distribute_countries()
     w.deploy_army()
+    # number of frames in animation determines number of runs of 'world.play_run'
     animating(w)
     return w
 
