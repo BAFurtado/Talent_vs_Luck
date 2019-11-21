@@ -31,11 +31,11 @@ def battle(n_att, n_def):
 
 
 if __name__ == '__main__':
-    # print(battle(2, 3))
-    m = 5000
-    res = 0
-    for i in range(m):
-        att, _def = battle(4, 3)
-        if att > _def:
-            res += 1
-    print(res/m)
+    print(battle(1, 1))
+    # m = 5000
+    # res = 0
+    # for i in range(m):
+    #     att, _def = battle(4, 3)
+    #     if att > _def:
+    #         res += 1
+    # print(res/m)

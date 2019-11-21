@@ -1,7 +1,7 @@
 from collections import Counter
 
 import networkx as nx
-
+from numpy import random
 import battle
 
 
@@ -34,7 +34,7 @@ class Player:
         if 1 in stats.values():
             for k, v in stats.items():
                 if v == 1:
-                    armies[k] = stats[k]
+                    armies[k] = world.data['continent_values'][k]
         return armies
 
     def prop_continent(self, world):
@@ -48,6 +48,9 @@ class Player:
     def calculate_army(self, world):
         armies = self.full_continent(world)
         armies['general'] = self.num_countries() // 2
+        # Assign minimum of three armies per player
+        if armies['general'] < 3:
+            armies['general'] = 3
         return armies
 
     def define_priorities(self, world):
@@ -85,7 +88,21 @@ class Player:
                 self.my_countries[a[0]].army += 1
                 max_territory -= 1
                 armies['general'] -= 1
-        # Allocate continent army
+
+            # Allocate continent army
+            if len(armies.keys()) > 1:
+                for key in armies.keys():
+                    if len(key) == 1 and armies[key] > 0:
+                        if self.my_countries[a[0]] in world.data['continents'][key]:
+                            self.my_countries[a[0]].army = armies[key]
+                            armies[key] = 0
+                            break
+                        else:
+                            for i in range(armies[key]):
+                                # Pick a random country within the continent
+                                c = random.choice(world.data['continents'][key])
+                                self.my_countries[c].army += 1
+                            armies[key] = 0
 
     def attack(self, world):
         if world.turn != 0:
@@ -100,7 +117,12 @@ class Player:
                 if d == 0:
                     defender.owner.remove_country(world, defender)
                     # Check number of armies to pass
-                    self.add_country(world, defender)
+                    if a > 4:
+                        self.add_country(world, defender, a - 3)
+                        attacker.army -= a - 3
+                    else:
+                        self.add_country(world, defender, a - 1)
+                        attacker.army -= a - 1
                 else:
                     attacker.army = a
                     defender.army = d

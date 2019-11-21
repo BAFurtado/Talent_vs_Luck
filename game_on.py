@@ -39,7 +39,7 @@ def update(number_frames_i, world, ax):
 
 def animating(world):
     fig, ax = plt.subplots()
-    ani = animation.FuncAnimation(fig, update, frames=5, interval=600,
+    ani = animation.FuncAnimation(fig, update, frames=25, interval=600,
                                   fargs=(world, ax))
     ani.save('game.gif', writer='ImageMagick')
     plt.show()
