@@ -59,7 +59,7 @@ class Goal:
                 return True
             return False
         elif self.type == 'destroy':
-            if len(self.to_conquer) == 0:
+            if len(self.to_conquer) == 0 and len(player.my_countries) > 0:
                 return True
             return False
         else:

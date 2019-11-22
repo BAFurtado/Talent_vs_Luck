@@ -70,6 +70,7 @@ class World:
             p.allocate_armies(self)
 
     def play_turn(self):
+        # If using while, animation won't work
         if self.on:
             print(f'Playing turn {self.turn}')
             for p in self.players:
@@ -78,9 +79,9 @@ class World:
                     # Check Winner!
                     p.goal.update_goal(self.countries)
                     if p.goal.check_goal(p):
-                        print(f'{p.name.capitalize()} is the WINNER!\n'
-                              f'Its goal was {p.goal.type} and its enemy was {p.goal.enemy}\n'
-                              f'He had {sum([c.army for c in p.my_countries.values()])} armies')
+                        print(f"{p.name.capitalize()} is the WINNER, "
+                              f"with {sum([c.army for c in p.my_countries.values()])} armies, "
+                              f"goal: '{p.goal.type}' and enemy {p.goal.enemy}")
                         self.on = False
             self.turn += 1
 
