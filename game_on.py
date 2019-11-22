@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 import networkx as nx
 from matplotlib import animation
 from numpy import random
-import os
+
 import strategies
 from countries import World
 from goals import draw_n_goals, types, possible_enemies, Goal
@@ -31,7 +31,7 @@ def update(num, world, ax):
     ax.clear()
     # Set the title
     ax.set_title(f'Turn {world.turn}')
-    nx.draw_networkx(world.net, with_labels=True, pos=nx.kamada_kawai_layout(world.net), ax=ax,
+    nx.draw_networkx(world.net, with_labels=True, pos=nx.kamada_kawai_layout(world.net),
                      node_color=[world.net.nodes[i]['owner'] for i in world.net.nodes], tight_layout=False)
     world.play_turn()
 
@@ -40,18 +40,22 @@ def animating(world):
     fig, ax = plt.subplots()
     ani = animation.FuncAnimation(fig, update, fargs=(world, ax), interval=600)
     ani.save('game.gif', writer='imagemagick')
-    plt.show()
+    # plt.show()
 
 
-def main(num_players):
+def main(num_players, animate=True):
     w = gen_world(num_players)
     w.distribute_countries()
     w.deploy_army()
     # number of frames in animation determines number of runs of 'world.play_run'
-    animating(w)
+    if animate:
+        animating(w)
+    else:
+        while w.on:
+            w.play_turn()
     return w
 
 
 if __name__ == '__main__':
-    w1 = main(6)
+    w1 = main(6, False)
     p1 = w1.players[0]
