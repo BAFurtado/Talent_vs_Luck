@@ -89,6 +89,9 @@ class World:
 
                         self.on = False
             self.turn += 1
+            if self.turn > 200:
+                self.on = False
+                self.winner = (None, None)
 
 
 if __name__ == '__main__':
