@@ -18,15 +18,26 @@ iii) Occupy 18 territories with at least 2 armies in each territory.
 
 iv) Occupy 24 territories (no restriction to 2 or more armies in each). """
 
+"""
+Blitz. Allocate all to first priority
+
+Minimalist. Conquer one territory, stop.
+
+Random.
+"""
+
 from numpy import random
 
 from countries import data
 
+strategies = ['random', 'minimalist', 'blitz']
 continent_goals = [['Asia', 'South America'], ['Asia', 'Africa'], ['North America', 'Africa'],
                    ['North America', 'Asia', 'Australia']]
 continent_goals_keys = [['4', '1'], ['4', '3'], ['0', '3'], ['0', '4', '5']]
 types = ['continent', 'destroy', 'territory18', 'territory24']
 possible_enemies = ['aqua', 'silver', 'plum', 'salmon', 'gold', 'forestgreen']
+
+
 
 
 def generate_continent_goals():

@@ -131,7 +131,7 @@ class Player:
                         attacker.army -= a - 1
                     if len(temp_player.my_countries) == 0:
                         temp_player.playing = False
-                        print(f'{temp_player.name} is out of the game')
+                        # print(f'{temp_player.name} is out of the game')
                         return
                     if self.strategy == 'minimalist':
                         return

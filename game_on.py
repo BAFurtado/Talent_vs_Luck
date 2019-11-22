@@ -3,9 +3,8 @@ import networkx as nx
 from matplotlib import animation
 from numpy import random
 
-import strategies
 from countries import World
-from goals import draw_n_goals, types, possible_enemies, Goal
+from goals import draw_n_goals, types, possible_enemies, Goal, strategies
 from players import Player
 
 
@@ -16,7 +15,7 @@ def gen_world(num_players):
     for i in range(num_players):
         p = Player(i)
         p.name = enemies[i]
-        p.strategy = random.choice(strategies.strategies)
+        p.strategy = random.choice(strategies)
         random.shuffle(gls)
         g = gls.pop()
         if g.enemy != p.name:
@@ -38,7 +37,7 @@ def update(num, world, ax):
 
 def animating(world):
     fig, ax = plt.subplots()
-    ani = animation.FuncAnimation(fig, update, fargs=(world, ax), interval=600)
+    ani = animation.FuncAnimation(fig, update, fargs=(world, ax), interval=500, repeat_delay=0)
     ani.save('game.gif', writer='imagemagick')
     # plt.show()
 
@@ -53,10 +52,11 @@ def main(num_players, animate):
     else:
         while w.on:
             w.play_turn()
-    return w
+    return w.winner
 
 
 if __name__ == '__main__':
-    anim = True
-    w1 = main(6, anim)
-    p1 = w1.players[0]
+    anim = False
+    winner = main(6, anim)
+    # import os
+    # os.system("ffmpeg -i game.mp4 game.gif")
