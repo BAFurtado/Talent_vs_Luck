@@ -76,12 +76,13 @@ class World:
             for p in self.players:
                 if self.on:
                     p.attack(self)
+                    p.rearrange(self)
                     # Check Winner!
                     p.goal.update_goal(self.countries)
                     if p.goal.check_goal(p):
                         print(f"{p.name.capitalize()} is the WINNER, "
                               f"with {sum([c.army for c in p.my_countries.values()])} armies, "
-                              f"goal: '{p.goal.type}' and enemy {p.goal.enemy}")
+                              f"goal: '{p.goal.type}' and enemy {p.goal.enemy} with strategy {p.strategy}")
                         self.on = False
             self.turn += 1
 

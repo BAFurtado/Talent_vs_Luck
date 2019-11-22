@@ -13,6 +13,7 @@ class Player:
         self.strategy = None
         self.goal = None
         self.my_countries = dict()
+        self.playing = True
 
     def add_country(self, world, country, army=1):
         self.my_countries[country.id] = country
@@ -84,7 +85,10 @@ class Player:
         armies = self.calculate_army(world)
         attack_priority = self.define_priorities(world)
         for a in attack_priority:
-            max_territory = 3
+            if self.strategy == 'blitz':
+                max_territory = armies['general']
+            else:
+                max_territory = 3
             while armies['general'] > 0 and max_territory > 0:
                 self.my_countries[a[0]].army += 1
                 max_territory -= 1
@@ -116,6 +120,7 @@ class Player:
                 # Attack until winning or exhausting army
                 a, d = battle.battle(attacker.army, defender.army)
                 if d == 0:
+                    temp_player = defender.owner
                     defender.owner.remove_country(world, defender)
                     # Check number of armies to pass
                     if a > 4:
@@ -124,9 +129,39 @@ class Player:
                     else:
                         self.add_country(world, defender, a - 1)
                         attacker.army -= a - 1
+                    if len(temp_player.my_countries) == 0:
+                        temp_player.playing = False
+                        print(f'{temp_player.name} is out of the game')
+                        return
+                    if self.strategy == 'minimalist':
+                        return
                 else:
                     attacker.army = a
                     defender.army = d
+
+    def rearrange(self, world):
+        if self.strategy == 'random':
+            pass
+        else:
+            if self.strategy == 'blitz':
+                # protect hubs
+                min_army = 1
+            else:
+                # minimalist, protection across countries
+                min_army = 2
+            # collect extra armies
+            extra = 0
+            for key in self.my_countries.keys():
+                if self.my_countries[key].army > min_army:
+                    self.my_countries[key].army -= self.my_countries[key].army - min_army
+                    extra += self.my_countries[key].army - min_army
+            priorities = self.define_priorities(world)
+            i = 0
+            while extra > 0:
+                self.my_countries[priorities[i][0]].army += 1
+                extra -= 1
+                i += 1
+                i = i % len(self.my_countries.keys())
 
 
 if __name__ == '__main__':

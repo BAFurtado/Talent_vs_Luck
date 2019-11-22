@@ -50,21 +50,24 @@ class Goal:
             self.to_conquer = [c for c in countries.values() if c.owner.name == self.enemy]
 
     def check_goal(self, player):
-        if self.type == 'territory18':
-            if len([c for c in player.my_countries.values() if c.army > 1]) > 17:
-                return True
-            return False
-        elif self.type == 'territory24':
-            if player.num_countries() > 23:
-                return True
-            return False
-        elif self.type == 'destroy':
-            if len(self.to_conquer) == 0 and len(player.my_countries) > 0:
-                return True
-            return False
+        if player.playing:
+            if self.type == 'territory18':
+                if len([c for c in player.my_countries.values() if c.army > 1]) > 17:
+                    return True
+                return False
+            elif self.type == 'territory24':
+                if player.num_countries() > 23:
+                    return True
+                return False
+            elif self.type == 'destroy':
+                if len(self.to_conquer) == 0 and len(player.my_countries) > 0:
+                    return True
+                return False
+            else:
+                if set(self.to_conquer).issubset(set(player.my_countries.keys())):
+                    return True
+                return False
         else:
-            if set(self.to_conquer).issubset(set(player.my_countries.keys())):
-                return True
             return False
 
 

@@ -43,7 +43,7 @@ def animating(world):
     # plt.show()
 
 
-def main(num_players, animate=True):
+def main(num_players, animate):
     w = gen_world(num_players)
     w.distribute_countries()
     w.deploy_army()
@@ -57,5 +57,6 @@ def main(num_players, animate=True):
 
 
 if __name__ == '__main__':
-    w1 = main(6, False)
+    anim = True
+    w1 = main(6, anim)
     p1 = w1.players[0]
