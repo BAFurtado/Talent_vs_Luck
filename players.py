@@ -21,10 +21,10 @@ class Player:
         nx.set_node_attributes(world.net, {country.id: {'owner': self.name}})
 
     def remove_country(self, world, country):
-        self.my_countries.pop(country, None)
         country.owner = None
         country.army = 0
         nx.set_node_attributes(world.net, {country.id: {'owner': None}})
+        del self.my_countries[country.id]
 
     def num_countries(self):
         return len(self.my_countries)
