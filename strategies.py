@@ -1,3 +1,4 @@
+import pickle
 import game_on
 from collections import Counter
 
@@ -11,7 +12,9 @@ def statistics(n):
 
 
 if __name__ == '__main__':
-    m = 2000
+    m = 100000
     out = statistics(m)
-    c  = Counter(out)
+    c = Counter(out)
+    with open('objects', 'wb') as f:
+        pickle.dump(c, f)
     print(c)
