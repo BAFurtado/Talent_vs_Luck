@@ -38,8 +38,8 @@ def update(num, world, ax):
 def animating(world):
     fig, ax = plt.subplots()
     ani = animation.FuncAnimation(fig, update, fargs=(world, ax), interval=500, repeat_delay=0)
-    ani.save('game.gif', writer='imagemagick')
-    # plt.show()
+    ani.save('game.mp4', writer='ffmpeg')
+    plt.show()
 
 
 def main(num_players, animate):
@@ -56,7 +56,10 @@ def main(num_players, animate):
 
 
 if __name__ == '__main__':
-    anim = False
+    anim = True
     winner = main(6, anim)
-    # import os
-    # os.system("ffmpeg -i game.mp4 game.gif")
+    if anim:
+        import os
+        if os.path.exists('game.gif'):
+            os.remove('game.gif')
+        os.system("ffmpeg -i game.mp4 game.gif")

@@ -71,7 +71,7 @@ class World:
             p.allocate_armies(self)
 
     def play_turn(self):
-        # If using while, animation won't work
+        # Animation won't work with while. It has to be an IF
         if self.on:
             # print(f'Playing turn {self.turn}')
             for p in self.players:

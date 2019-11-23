@@ -120,7 +120,7 @@ class Player:
                 # Attack until winning or exhausting army
                 a, d = battle.battle(attacker.army, defender.army)
                 if d == 0:
-                    temp_player = defender.owner
+                    temp_defender = defender.owner
                     defender.owner.remove_country(world, defender)
                     # Check number of armies to pass
                     if a > 4:
@@ -129,10 +129,14 @@ class Player:
                     else:
                         self.add_country(world, defender, a - 1)
                         attacker.army -= a - 1
-                    if len(temp_player.my_countries) == 0:
-                        temp_player.playing = False
+
+                    # Check if loser is done
+                    if len(temp_defender.my_countries) == 0:
+                        temp_defender.playing = False
                         # print(f'{temp_player.name} is out of the game')
-                        return
+                        if attacker.owner.goal.enemy == temp_defender.name:
+                            world.winner = (attacker.owner.strategy, attacker.owner.goal.type)
+                            world.on = False
                     if self.strategy == 'minimalist':
                         return
                 else:

@@ -11,7 +11,7 @@ def statistics(n):
 
 
 if __name__ == '__main__':
-    # TODO: Check 'destroy' by the player itself, otherwise territory24
-    m = 100
+    m = 2000
     out = statistics(m)
-    print(Counter(out))
+    c  = Counter(out)
+    print(c)

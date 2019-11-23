@@ -38,8 +38,6 @@ types = ['continent', 'destroy', 'territory18', 'territory24']
 possible_enemies = ['aqua', 'silver', 'plum', 'salmon', 'gold', 'forestgreen']
 
 
-
-
 def generate_continent_goals():
     ctn_goals = list()
     for each in continent_goals_keys:
@@ -72,6 +70,9 @@ class Goal:
                 return False
             elif self.type == 'destroy':
                 if len(self.to_conquer) == 0 and len(player.my_countries) > 0:
+                    # Winner by destroy is only checked and conquered at each country win
+                    player.goal.type = 'territory24'
+                    player.enemy = None
                     return True
                 return False
             else:
