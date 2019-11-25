@@ -77,17 +77,17 @@ class World:
             for p in self.players:
                 if self.on:
                     p.attack(self)
-                    p.rearrange(self)
-                    # Check Winner!
-                    p.goal.update_goal(self.countries)
-                    if p.goal.check_goal(p):
-                        # arms = sum([c.army for c in p.my_countries.values()])
-                        # print(f"{p.name.capitalize()} is the WINNER, "
-                        #       f"with {arms} armies, "
-                        #       f"goal: '{p.goal.type}' and enemy {p.goal.enemy} with strategy {p.strategy}")
-                        self.winner = (p.strategy, p.goal.type)
-
-                        self.on = False
+                    if self.on:
+                        p.rearrange(self)
+                        # Check Winner!
+                        p.goal.update_goal(self.countries)
+                        if p.goal.check_goal(p):
+                            # arms = sum([c.army for c in p.my_countries.values()])
+                            # print(f"{p.name.capitalize()} is the WINNER, "
+                            #       f"with {arms} armies, "
+                            #       f"goal: '{p.goal.type}' and enemy {p.goal.enemy} with strategy {p.strategy}")
+                            self.winner = (p.strategy, p.goal.type)
+                            self.on = False
             self.turn += 1
             if self.turn > 200:
                 self.on = False

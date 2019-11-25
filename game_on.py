@@ -31,7 +31,7 @@ def update(num, world, ax):
     # Set the title
     ax.set_title(f'Turn {world.turn}')
     nx.draw_networkx(world.net, with_labels=True, pos=nx.kamada_kawai_layout(world.net),
-                     node_color=[world.net.nodes[i]['owner'] for i in world.net.nodes], tight_layout=False)
+                     node_color=[world.net.nodes[i]['owner'] for i in world.net.nodes], tight_layout=False, )
     world.play_turn()
 
 

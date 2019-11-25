@@ -137,6 +137,7 @@ class Player:
                         if attacker.owner.goal.enemy == temp_defender.name:
                             world.winner = (attacker.owner.strategy, attacker.owner.goal.type)
                             world.on = False
+                            return
                     if self.strategy == 'minimalist':
                         return
                 else:
