@@ -30,7 +30,8 @@ def update(num, world, ax):
     ax.clear()
     # Set the title
     ax.set_title(f'Turn {world.turn}')
-    nx.draw_networkx(world.net, with_labels=True, pos=nx.kamada_kawai_layout(world.net),
+    labels = {k: world.countries[k].army for k in world.countries.keys()}
+    nx.draw_networkx(world.net, pos=nx.kamada_kawai_layout(world.net), labels=labels,
                      node_color=[world.net.nodes[i]['owner'] for i in world.net.nodes], tight_layout=False, )
     world.play_turn()
 
