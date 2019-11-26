@@ -17,6 +17,7 @@ def gen_world(num_players):
         p = Player(i)
         p.name = enemies[i]
         p.strategy = random.choice(strategies)
+
         random.shuffle(gls)
         g = gls.pop()
         if g.enemy != p.name:
@@ -39,7 +40,7 @@ def update(num, world, ax):
 
 def animating(world):
     fig, ax = plt.subplots()
-    ani = animation.FuncAnimation(fig, update, fargs=(world, ax), interval=800, repeat_delay=0)
+    ani = animation.FuncAnimation(fig, update, frames=200, fargs=(world, ax), interval=800, repeat_delay=0)
     ani.save('game.gif', writer='pillow')
     plt.show()
 

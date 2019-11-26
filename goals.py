@@ -70,10 +70,10 @@ class Goal:
                 return False
             elif self.type == 'destroy':
                 if len(self.to_conquer) == 0 and len(player.my_countries) > 0:
-                    # Winner by destroy is only checked and conquered at each country win
+                    # Winner by destroy is only checked and conquered at each country battle win
                     player.goal.type = 'territory24'
-                    player.enemy = None
-                    return True
+                    player.goal.enemy = None
+                    return False
                 return False
             else:
                 if set(self.to_conquer).issubset(set(player.my_countries.keys())):

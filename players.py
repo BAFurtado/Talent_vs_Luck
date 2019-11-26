@@ -139,10 +139,11 @@ class Player:
                             world.winner = (attacker.owner.strategy, attacker.owner.goal.type)
                             world.on = False
                             if world.log:
-                                arms = sum([c.army for c in p.my_countries.values()])
+                                arms = sum([c.army for c in attacker.owner.my_countries.values()])
                                 world.log.info(f"{attacker.owner.name.capitalize()} is the WINNER, with {arms} armies, "
-                                              f"goal: '{attacker.owner.goal.type}' and enemy {attacker.owner.goal.enemy} "
-                                              f"with strategy {attacker.owner.strategy}")
+                                               f"goal: '{attacker.owner.goal.type}' "
+                                               f"and enemy {attacker.owner.goal.enemy} "
+                                               f"with strategy {attacker.owner.strategy}")
                             return
                     if self.strategy == 'minimalist':
                         return
