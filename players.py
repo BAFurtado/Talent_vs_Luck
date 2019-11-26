@@ -133,10 +133,16 @@ class Player:
                     # Check if loser is done
                     if len(temp_defender.my_countries) == 0:
                         temp_defender.playing = False
-                        # print(f'{temp_player.name} is out of the game')
+                        if world.log:
+                            world.log.info(f'{temp_defender.name} is out of the game')
                         if attacker.owner.goal.enemy == temp_defender.name:
                             world.winner = (attacker.owner.strategy, attacker.owner.goal.type)
                             world.on = False
+                            if world.log:
+                                arms = sum([c.army for c in p.my_countries.values()])
+                                world.log.info(f"{attacker.owner.name.capitalize()} is the WINNER, with {arms} armies, "
+                                              f"goal: '{attacker.owner.goal.type}' and enemy {attacker.owner.goal.enemy} "
+                                              f"with strategy {attacker.owner.strategy}")
                             return
                     if self.strategy == 'minimalist':
                         return

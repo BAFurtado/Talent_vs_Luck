@@ -51,6 +51,7 @@ class World:
         self.net = self.generate_map()
         self.on = True
         self.winner = None
+        self.log = None
 
     def generate_map(self):
         G = nx.Graph()
@@ -73,19 +74,23 @@ class World:
     def play_turn(self):
         # Animation won't work with while. It has to be an IF
         if self.on:
-            # print(f'Playing turn {self.turn}')
+            if self.log:
+                self.log.info(f'Playing turn {self.turn}')
             for p in self.players:
+                # Check if last player did not win with 'destroy' goal
                 if self.on:
                     p.attack(self)
+                    # Again checking goals before rearranging
                     if self.on:
                         p.rearrange(self)
                         # Check Winner!
                         p.goal.update_goal(self.countries)
                         if p.goal.check_goal(p):
-                            # arms = sum([c.army for c in p.my_countries.values()])
-                            # print(f"{p.name.capitalize()} is the WINNER, "
-                            #       f"with {arms} armies, "
-                            #       f"goal: '{p.goal.type}' and enemy {p.goal.enemy} with strategy {p.strategy}")
+                            if self.log:
+                                arms = sum([c.army for c in p.my_countries.values()])
+                                self.log.info(f"{p.name.capitalize()} is the WINNER, with {arms} armies, "
+                                              f"goal: '{p.goal.type}' and enemy {p.goal.enemy} "
+                                              f"with strategy {p.strategy}")
                             self.winner = (p.strategy, p.goal.type)
                             self.on = False
             self.turn += 1

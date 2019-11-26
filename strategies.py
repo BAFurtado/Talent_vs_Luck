@@ -1,6 +1,7 @@
 import pickle
-import game_on
 from collections import Counter
+
+import game_on
 
 
 def statistics(n):

@@ -2,6 +2,7 @@ import matplotlib.pyplot as plt
 import networkx as nx
 from matplotlib import animation
 from numpy import random
+import logging
 
 from countries import World
 from goals import draw_n_goals, types, possible_enemies, Goal, strategies
@@ -38,13 +39,16 @@ def update(num, world, ax):
 
 def animating(world):
     fig, ax = plt.subplots()
-    ani = animation.FuncAnimation(fig, update, fargs=(world, ax), interval=500, repeat_delay=0)
-    ani.save('game.mp4', writer='ffmpeg')
+    ani = animation.FuncAnimation(fig, update, fargs=(world, ax), interval=800, repeat_delay=0)
+    ani.save('game.gif', writer='pillow')
     plt.show()
 
 
 def main(num_players, animate):
     w = gen_world(num_players)
+    if animate:
+        w.log = logging.getLogger(__name__)
+        logging.basicConfig(level=logging.INFO)
     w.distribute_countries()
     w.deploy_army()
     # number of frames in animation determines number of runs of 'world.play_run'
@@ -59,8 +63,8 @@ def main(num_players, animate):
 if __name__ == '__main__':
     anim = True
     winner = main(6, anim)
-    if anim:
-        import os
-        if os.path.exists('game.gif'):
-            os.remove('game.gif')
-        os.system("ffmpeg -i game.mp4 game.gif")
+    # if anim:
+    #     import os
+    #     if os.path.exists('game.gif'):
+    #         os.remove('game.gif')
+    #     os.system("ffmpeg -i game.mp4 game.gif")
