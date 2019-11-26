@@ -14,6 +14,7 @@ class Player:
         self.goal = None
         self.my_countries = dict()
         self.playing = True
+        self.dice = list()
 
     def add_country(self, world, country, army=1):
         self.my_countries[country.id] = country
@@ -118,7 +119,7 @@ class Player:
             if attacker.army > 1:
                 defender = world.countries[a[1]]
                 # Attack until winning or exhausting army
-                a, d = battle.battle(attacker.army, defender.army)
+                a, d = battle.battle(attacker, defender)
                 if d == 0:
                     temp_defender = defender.owner
                     defender.owner.remove_country(world, defender)

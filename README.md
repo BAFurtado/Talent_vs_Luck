@@ -10,6 +10,7 @@ You can adjust the number of times {m}. It does not take long to run 100,000 tim
 
 TODO
 0. Test
+0. Test army minimalist
 1. Count number of goals
 2. Save dice rolling
 3. Think further about strategies

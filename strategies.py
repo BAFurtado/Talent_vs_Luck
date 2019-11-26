@@ -13,7 +13,7 @@ def statistics(n):
 
 
 if __name__ == '__main__':
-    m = 100000
+    m = 100
     out = statistics(m)
     c = Counter(out)
     with open(f'objects_{m}', 'wb') as f:

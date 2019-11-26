@@ -3,6 +3,7 @@ import networkx as nx
 from matplotlib import animation
 from numpy import random
 import logging
+from numpy import cumsum
 
 from countries import World
 from goals import draw_n_goals, types, possible_enemies, Goal, strategies
@@ -58,12 +59,19 @@ def main(num_players, animate):
     else:
         while w.on:
             w.play_turn()
-    return w.winner
+    # return w.winner
+    return w
 
 
 if __name__ == '__main__':
     anim = True
-    winner = main(6, anim)
+    # winner = main(6, anim)
+    w = main(6, anim)
+    for p in w.players:
+        print(f'{sum(p.dice)/len(p.dice):.4f}, {len(p.dice)}, '
+              f'{len(p.my_countries)}, {p.name}, {p.strategy}, {p.goal.type}')
+        plt.plot(cumsum(p.dice), color=p.name)
+    plt.show()
     # if anim:
     #     import os
     #     if os.path.exists('game.gif'):
