@@ -16,7 +16,7 @@ if __name__ == '__main__':
     m = 100
     out = statistics(m)
     c = Counter(out)
-    with open(f'objects_{m}', 'wb') as f:
+    with open(f'results/objects_{m}', 'wb') as f:
         pickle.dump(c, f)
     print(c)
     # with open(f'objects_{m}', 'rb') as f:

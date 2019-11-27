@@ -59,8 +59,8 @@ def main(num_players, animate):
     else:
         while w.on:
             w.play_turn()
-    # return w.winner
-    return w
+    return w.winner
+    # return w
 
 
 if __name__ == '__main__':

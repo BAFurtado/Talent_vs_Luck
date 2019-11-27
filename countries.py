@@ -38,7 +38,7 @@ class Country:
         self.army = 0
 
     def __str__(self):
-        return f'Country {self.name} -- id no. {self.id} is in continent {self.continent}\n' \
+        return f'Country {self.name} -- id no. {self.id}. Army: {self.army} is in continent {self.continent}\n' \
                f'My neighbors are {self.neighbors}\n'
 
 

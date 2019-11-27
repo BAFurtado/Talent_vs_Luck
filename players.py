@@ -154,6 +154,7 @@ class Player:
 
     def rearrange(self, world):
         if self.strategy == 'random':
+            # No rearranging of armies at end of turn
             pass
         else:
             if self.strategy == 'blitz':
@@ -166,15 +167,26 @@ class Player:
             extra = 0
             for key in self.my_countries.keys():
                 if self.my_countries[key].army > min_army:
-                    self.my_countries[key].army -= self.my_countries[key].army - min_army
-                    extra += self.my_countries[key].army - min_army
+                    adendum = self.my_countries[key].army
+                    self.my_countries[key].army -= adendum - min_army
+                    extra += adendum - min_army
             priorities = self.define_priorities(world)
+            if self.strategy == 'minimalist':
+                priorities = set([priorities[i][0] for i in range(len(priorities))])
+                priorities = list(priorities)
+            else:
+                priorities = [priorities[i][0] for i in range(len(priorities))]
             i = 0
             while extra > 0:
-                self.my_countries[priorities[i][0]].army += 1
-                extra -= 1
-                i += 1
-                i = i % len(self.my_countries.keys())
+                if len(priorities) != 0:
+                    self.my_countries[priorities[i]].army += 1
+                    extra -= 1
+                    i += 1
+                    i = i % len(priorities)
+                else:
+                    k = random.choice(list(self.my_countries.keys()))
+                    self.my_countries[k].army += 1
+                    extra -= 1
 
 
 if __name__ == '__main__':
