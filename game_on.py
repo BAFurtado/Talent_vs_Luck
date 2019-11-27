@@ -46,6 +46,27 @@ def animating(world):
     plt.show()
 
 
+def process_output(world):
+    results = dict()
+    if world.winner == 'Tie':
+        len_c = max([len(p.my_countries) for p in world.players])
+        world.winner = [p for p in world.players if len(p.my_countries) == len_c][0]
+        results['tie'] = True
+    else:
+        results['tie'] = False
+    results['strategy'] = world.winner.strategy
+    results['goal'] = world.winner.goal.type
+    results['n_countries'] = len(world.winner.my_countries)
+    results['o_avg_dice'] = sum([sum(p.dice) / len(p.dice)
+                                 for p in world.players
+                                 if p != world.winner])/(len(world.players) - 1)
+    results['w_avg_dice'] = sum(world.winner.dice) / len(world.winner.dice)
+    results['w_num_rolls'] = len(world.winner.dice)
+    results['o_avg_num_rolls'] = sum([len(p.dice) for p in world.players
+                                      if p != world.winner])/(len(world.players) - 1)
+    return results
+
+
 def main(num_players, animate):
     w = gen_world(num_players)
     if animate:
@@ -59,13 +80,13 @@ def main(num_players, animate):
     else:
         while w.on:
             w.play_turn()
-    return w.winner
-    # return w
+    if animate:
+        return w
+    return process_output(w)
 
 
 if __name__ == '__main__':
     anim = True
-    # winner = main(6, anim)
     w = main(6, anim)
     for p in w.players:
         print(f'{sum(p.dice)/len(p.dice):.4f}, {len(p.dice)}, '

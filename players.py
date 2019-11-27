@@ -137,7 +137,7 @@ class Player:
                         if world.log:
                             world.log.info(f'{temp_defender.name} is out of the game')
                         if attacker.owner.goal.enemy == temp_defender.name:
-                            world.winner = (attacker.owner.strategy, attacker.owner.goal.type)
+                            world.winner = attacker.owner
                             world.on = False
                             if world.log:
                                 arms = sum([c.army for c in attacker.owner.my_countries.values()])

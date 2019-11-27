@@ -91,12 +91,12 @@ class World:
                                 self.log.info(f"{p.name.capitalize()} is the WINNER, with {arms} armies, "
                                               f"goal: '{p.goal.type}' and enemy {p.goal.enemy} "
                                               f"with strategy {p.strategy}")
-                            self.winner = (p.strategy, p.goal.type)
+                            self.winner = p
                             self.on = False
             self.turn += 1
             if self.turn > 200:
                 self.on = False
-                self.winner = (None, None)
+                self.winner = 'Tie'
 
 
 if __name__ == '__main__':
