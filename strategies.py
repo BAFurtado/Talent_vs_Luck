@@ -1,6 +1,9 @@
 import pickle
-from collections import Counter
+
+import matplotlib.pyplot as plt
 import pandas as pd
+import seaborn as sns
+
 import game_on
 
 
@@ -15,11 +18,17 @@ def statistics(n):
 
 
 if __name__ == '__main__':
-    m = 100
-    out = statistics(m)
-    with open(f'results/objects_{m}', 'wb') as f:
-        pickle.dump(out, f)
-    print(out)
-    # with open(f'objects_{m}', 'rb') as f:
-    #     c = pickle.load(f)
-    # print(c)
+    m = 10000
+    # out = statistics(m)
+    # with open(f'results/objects_{m}', 'wb') as f:
+    #     pickle.dump(out, f)
+    # print(out)
+    #
+    with open(f'results/objects_{m}', 'rb') as f:
+        c = pickle.load(f)
+    print(c)
+    c[['n_countries', 'o_avg_dice', 'w_avg_dice', 'w_num_rolls', 'o_avg_num_rolls']] = c[
+        ['n_countries', 'o_avg_dice', 'w_avg_dice', 'w_num_rolls', 'o_avg_num_rolls']].astype('float')
+    sns.scatterplot(x='o_avg_dice', y='w_avg_dice', hue='strategy', data=c, palette=['red', 'green', 'blue'],
+                    alpha=.5, markers='.')
+    plt.show()

@@ -1,9 +1,10 @@
+import logging
+
 import matplotlib.pyplot as plt
 import networkx as nx
 from matplotlib import animation
-from numpy import random
-import logging
 from numpy import cumsum
+from numpy import random
 
 from countries import World
 from goals import draw_n_goals, types, possible_enemies, Goal, strategies
