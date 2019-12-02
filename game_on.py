@@ -50,6 +50,7 @@ def animating(world):
 def process_output(world):
     results = dict()
     if world.winner == 'Tie':
+        # If there is a tie winner is the country with highest number of countries
         len_c = max([len(p.my_countries) for p in world.players])
         world.winner = [p for p in world.players if len(p.my_countries) == len_c][0]
         results['tie'] = True
@@ -57,6 +58,7 @@ def process_output(world):
         results['tie'] = False
     results['strategy'] = world.winner.strategy
     results['goal'] = world.winner.goal.type
+    # Number of countries of the winner
     results['n_countries'] = len(world.winner.my_countries)
     results['o_avg_dice'] = sum([sum(p.dice) / len(p.dice)
                                  for p in world.players

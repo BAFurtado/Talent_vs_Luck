@@ -11,15 +11,17 @@ def combat(attacker, defender, attack=1, defense=1):
     p2 = sorted(roll(defense), reverse=True)
     a, d = 0, 0
     for i in range(min(attack, defense)):
+        # If player wins, he adds 1 to his list of rolls. Else, adds -1
+        # That is the win or loss of each of the dice the player rolls
         if p1[i] > p2[i]:
             a += 1
             attacker.owner.dice.append(1)
             defender.owner.dice.append(-1)
         else:
             d += 1
-            attacker.owner.dice.append(0)
-            defender.owner.dice.append(-1)
-    # Return number of wins on either side
+            attacker.owner.dice.append(-1)
+            defender.owner.dice.append(1)
+    # Return number of paired wins on either side
     return a, d
 
 
@@ -38,7 +40,7 @@ def battle(attacker, defender):
 
 
 if __name__ == '__main__':
-    print(battle(4, 3))
+    pass
     # m = 5000
     # res = 0
     # for i in range(m):
