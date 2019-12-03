@@ -21,15 +21,15 @@ def plotting(data, col1='w_avg_dice', col2='o_avg_dice', choice='strategy'):
     colors = {'blitz': 'blue', 'minimalist': 'red', 'random': 'green'}
     for key in colors.keys():
         ax.scatter(x=col1, y=col2, c=colors[key],
-                   data=data.loc[c[choice] == key], alpha=.12, marker='.', label=key)
+                   data=data.loc[c[choice] == key], alpha=.15, marker='.', s=.9, label=key)
 
-    horizontal = min(data[col2]), max(data[col1])
+    horizontal = min(data[col1]), max(data[col1])
     vertical = min(data[col2]), max(data[col2])
 
     ax.plot([horizontal[0], horizontal[1]], [0, 0], c='black', alpha=.5)
     ax.plot([0, 0], [vertical[0], vertical[1]], c='black', alpha=.5)
 
-    ax.legend(frameon=False)
+    ax.legend(frameon=False, markerscale=20)
 
     ls = [x.replace('_', ' ').replace('o', "Other players'").replace('w', 'Winner').replace('avg', 'average')
           for x in [col1, col2]]
@@ -63,7 +63,7 @@ def summary(data):
 
 
 if __name__ == '__main__':
-    m = 10000
+    m = 100000
     generate = False
     if generate:
         c = statistics(m)
@@ -77,5 +77,5 @@ if __name__ == '__main__':
     c[['n_countries', 'o_avg_dice', 'w_avg_dice', 'w_num_rolls', 'o_avg_num_rolls']] = \
         c[['n_countries', 'o_avg_dice', 'w_avg_dice', 'w_num_rolls', 'o_avg_num_rolls']].astype('float')
     plotting(c)
-    s = summary(c)
+    # s = summary(c)
 
