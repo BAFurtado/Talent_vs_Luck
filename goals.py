@@ -23,7 +23,7 @@ Blitz. Allocate all to first priority
 
 Minimalist. Conquer one territory, stop.
 
-Random.
+Sensible. Maximum of 3 on deploying, no rearranging
 """
 
 from numpy import random

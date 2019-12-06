@@ -3,7 +3,6 @@ import logging
 import matplotlib.pyplot as plt
 import networkx as nx
 from matplotlib import animation
-from numpy import cumsum
 from numpy import random
 
 from countries import World
