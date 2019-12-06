@@ -18,7 +18,7 @@ def statistics(n):
 
 def plotting(data, col1='w_avg_dice', col2='o_avg_dice', choice='strategy'):
     fig, ax = plt.subplots()
-    colors = {'blitz': 'blue', 'minimalist': 'red', 'random': 'green'}
+    colors = {'blitz': 'blue', 'minimalist': 'red', 'sensible': 'green'}
     for key in colors.keys():
         ax.scatter(x=col1, y=col2, c=colors[key],
                    data=data.loc[c[choice] == key], alpha=.15, marker='.', s=.9, label=key)
@@ -62,20 +62,24 @@ def summary(data):
     return data
 
 
-if __name__ == '__main__':
-    m = 100000
-    generate = False
+def main(n=10000, generate=True):
     if generate:
-        c = statistics(m)
-        with open(f'results/objects_{m}', 'wb') as f:
+        c = statistics(n)
+        with open(f'results/objects_{n}', 'wb') as f:
             pickle.dump(c, f)
         print(c)
     else:
-        with open(f'results/objects_{m}', 'rb') as f:
+        with open(f'results/objects_{n}', 'rb') as f:
             c = pickle.load(f)
         print(c)
     c[['n_countries', 'o_avg_dice', 'w_avg_dice', 'w_num_rolls', 'o_avg_num_rolls']] = \
         c[['n_countries', 'o_avg_dice', 'w_avg_dice', 'w_num_rolls', 'o_avg_num_rolls']].astype('float')
     plotting(c)
-    # s = summary(c)
+    s = summary(c)
+    return s
 
+
+if __name__ == '__main__':
+    m = 10000
+    gen = False
+    main(m, gen)

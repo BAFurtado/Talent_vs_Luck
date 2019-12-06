@@ -30,7 +30,7 @@ from numpy import random
 
 from countries import data
 
-strategies = ['random', 'minimalist', 'blitz']
+strategies = ['sensible', 'minimalist', 'blitz']
 continent_goals = [['Asia', 'South America'], ['Asia', 'Africa'], ['North America', 'Africa'],
                    ['North America', 'Asia', 'Australia']]
 continent_goals_keys = [['4', '1'], ['4', '3'], ['0', '3'], ['0', '4', '5']]

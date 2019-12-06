@@ -85,6 +85,8 @@ class Player:
     def allocate_armies(self, world):
         armies = self.calculate_army(world)
         attack_priority = self.define_priorities(world)
+
+        # Allocating 'general' armies
         for a in attack_priority:
             if self.strategy == 'blitz':
                 max_territory = armies['general']
@@ -95,7 +97,7 @@ class Player:
                 max_territory -= 1
                 armies['general'] -= 1
 
-            # Allocate continent army
+            # Allocating continent army
             if len(armies.keys()) > 1:
                 for key in armies.keys():
                     if len(key) == 1 and armies[key] > 0:
@@ -153,7 +155,7 @@ class Player:
                     defender.army = d
 
     def rearrange(self, world):
-        if self.strategy == 'random':
+        if self.strategy == 'sensible':
             # No rearranging of armies at end of turn
             pass
         else:
