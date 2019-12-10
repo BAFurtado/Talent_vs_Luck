@@ -99,6 +99,7 @@ if __name__ == '__main__':
     #           f'{len(p.my_countries)}, {p.name}, {p.strategy}, {p.goal.type}')
     #     plt.plot(cumsum(p.dice), color=p.name)
     # plt.show()
+    
     # # if anim:
     # #     import os
     # #     if os.path.exists('game.gif'):

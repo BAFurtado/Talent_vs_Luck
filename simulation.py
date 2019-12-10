@@ -21,7 +21,7 @@ def summary(data):
     data = data.reset_index()
     data.columns = data.columns.droplevel(1)
     d1 = data.iloc[:, :5]
-    d2 = data.iloc[:, [5, 7, 9, 11, 12, 13]]
+    d2 = data.iloc[:, [5, 7, 9, 11, 13, 15]]
     data = pd.concat([d1, d2], axis=1)
     data.columns = ['strategy', 'goal', 'tie', 'n_countries', 'num_wins', 'o_avg_dice', 'w_avg_dice', 'w_num_rolls',
                     'o_avg_num_rolls', '2nd_avg_dice', '2nd_num_rolls']
@@ -46,6 +46,6 @@ def main(n=10000, generate=True):
 
 
 if __name__ == '__main__':
-    m = 10
-    gen = False
+    m = 100000
+    gen = True
     o = main(m, gen)
