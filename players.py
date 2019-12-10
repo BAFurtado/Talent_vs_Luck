@@ -138,6 +138,7 @@ class Player:
                         temp_defender.playing = False
                         if world.log:
                             world.log.info(f'{temp_defender.name} is out of the game')
+                        # Checking if 'destroy' objective is done immediately at every successful attack
                         if attacker.owner.goal.enemy == temp_defender.name:
                             world.winner = attacker.owner
                             world.on = False

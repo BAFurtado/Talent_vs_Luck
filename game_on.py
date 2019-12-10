@@ -21,6 +21,7 @@ def gen_world(num_players):
 
         random.shuffle(gls)
         g = gls.pop()
+        # Checking if destroy is not self-inflicted.
         if g.enemy != p.name:
             p.goal = g
         else:
@@ -70,6 +71,8 @@ def process_output(world):
     p2 = [p for p in world.players if len(p.my_countries) == len_2nd[-2]]
     results['2nd_avg_dice'] = sum(p2[0].dice) / len(p2[0].dice)
     results['2nd_num_rolls'] = len(p2[0].dice)
+    results['n_players_end'] = len([p for p in world.players if p.playing])
+    results['n_changed_goals'] = world.changed_goal
     return results
 
 

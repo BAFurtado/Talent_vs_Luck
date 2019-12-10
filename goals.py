@@ -58,7 +58,7 @@ class Goal:
         if self.type == 'destroy':
             self.to_conquer = [c for c in countries.values() if c.owner.name == self.enemy]
 
-    def check_goal(self, player):
+    def check_goal(self, world, player):
         if player.playing:
             if self.type == 'territory18':
                 if len([c for c in player.my_countries.values() if c.army > 1]) > 17:
@@ -71,8 +71,11 @@ class Goal:
             elif self.type == 'destroy':
                 if len(self.to_conquer) == 0 and len(player.my_countries) > 0:
                     # Winner by destroy is only checked and conquered at each country battle win
+                    # This is just the case in which other player destroyed the enemy.
+                    # Changes goal and returns False
                     player.goal.type = 'territory24'
                     player.goal.enemy = None
+                    world.changed_goal += 1
                     return False
                 return False
             else:
@@ -84,15 +87,15 @@ class Goal:
 
 
 def draw_n_goals(n, goal_types, enemies):
-    countries = generate_continent_goals()
-    random.shuffle(countries)
+    continents = generate_continent_goals()
+    random.shuffle(continents)
     results = list()
     for i in range(n):
         _type = random.choice(goal_types)
         if _type == 'continent':
-            if len(countries) > 0:
+            if len(continents) > 0:
                 g = Goal(_type)
-                g.to_conquer = countries.pop()
+                g.to_conquer = continents.pop()
             else:
                 g = Goal(random.choice(['territory18', 'territory24']))
         elif _type == 'destroy':

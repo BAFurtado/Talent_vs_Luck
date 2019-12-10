@@ -29,8 +29,8 @@ def load_data():
 
 
 class Country:
-    def __init__(self, id, name):
-        self.id = id
+    def __init__(self, _id, name):
+        self.id = _id
         self.name = name
         self.continent = list()
         self.neighbors = list()
@@ -52,6 +52,7 @@ class World:
         self.on = True
         self.winner = None
         self.log = None
+        self.changed_goal = 0
 
     def generate_map(self):
         G = nx.Graph()
@@ -85,7 +86,7 @@ class World:
                         p.rearrange(self)
                         # Check Winner!
                         p.goal.update_goal(self.countries)
-                        if p.goal.check_goal(p):
+                        if p.goal.check_goal(self, p):
                             if self.log:
                                 arms = sum([c.army for c in p.my_countries.values()])
                                 self.log.info(f"{p.name.capitalize()} is the WINNER, with {arms} armies, "
