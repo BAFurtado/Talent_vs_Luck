@@ -91,7 +91,7 @@ def main(num_players, animate):
             w.play_turn()
     if animate:
         return w
-    return process_output(w)
+    return process_output(w), w
 
 
 if __name__ == '__main__':
