@@ -54,6 +54,6 @@ def main(n=10000, generate=True):
 
 
 if __name__ == '__main__':
-    m = 10
-    gen = True
+    m = 100000
+    gen = False
     o = main(m, gen)

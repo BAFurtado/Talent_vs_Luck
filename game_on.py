@@ -68,7 +68,7 @@ def process_output(world):
     results['o_avg_num_rolls'] = sum([len(p.dice) for p in world.players
                                       if p != world.winner])/(len(world.players) - 1)
     len_2nd = sorted([p.num_countries() for p in world.players])
-    p2 = [p for p in world.players if len(p.my_countries) == len_2nd[-2]]
+    p2 = [p for p in world.players if len(p.my_countries) == len_2nd[-2] and p != world.winner]
     results['2nd_avg_dice'] = sum(p2[0].dice) / len(p2[0].dice)
     results['2nd_num_rolls'] = len(p2[0].dice)
     results['n_players_end'] = len([p for p in world.players if p.playing])

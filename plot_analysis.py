@@ -33,7 +33,8 @@ def plotting(data, col1='w_avg_dice', col2='o_avg_dice', choice='strategy'):
     plt.tick_params(axis='both', which='both', bottom=True, top=False,
                     labelbottom=True, left=False, right=False, labelleft=True)
 
-    plt.savefig('{}_{}.png'.format(col1, col2), bbox_inches='tight')
+    plt.savefig('results/{}_{}.png'.format(col1, col2), bbox_inches='tight')
+    plt.savefig('results/{}_{}.pdf'.format(col1, col2), bbox_inches='tight')
     plt.show()
 
 
@@ -41,4 +42,4 @@ if __name__ == '__main__':
     m = 100000
     gen = False
     c = simulation.main(m, gen)
-    plotting(c)
+    plotting(c[c.tie==True], col2='2nd_avg_dice')
