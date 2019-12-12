@@ -1,6 +1,16 @@
 import matplotlib.pyplot as plt
-
+import seaborn as sns
 import simulation
+
+
+def plot_kde(data, cols, target):
+    fig, ax = plt.subplots()
+    for col in cols:
+        ax = sns.kdeplot(data[data.strategy==col][target], shade=True, label=col)
+    sns.despine()
+    ax.legend(frameon=False)
+    plt.show()
+    fig.savefig('kde1.png')
 
 
 def plotting(data, col1='w_avg_dice', col2='o_avg_dice', choice='strategy'):
@@ -42,4 +52,7 @@ if __name__ == '__main__':
     m = 100000
     gen = False
     c = simulation.main(m, gen)
-    plotting(c[c.tie==True], col2='2nd_avg_dice')
+    # plotting(c[c.tie], col2='2nd_avg_dice')
+    cs = ['sensible', 'minimalist', 'blitz']
+    t = 'n_countries'
+    plot_kde(c, cs, t)
