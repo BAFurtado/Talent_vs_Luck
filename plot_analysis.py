@@ -10,7 +10,8 @@ def plot_kde(data, cols, target):
     sns.despine()
     ax.legend(frameon=False)
     plt.show()
-    fig.savefig('kde1.png')
+    fig.savefig(f'results/kde_{cols}_{target}.png')
+    fig.savefig(f'results/kde_{cols}_{target}.pdf')
 
 
 def plotting(data, col1='w_avg_dice', col2='o_avg_dice', choice='strategy'):
