@@ -3,7 +3,7 @@ import seaborn as sns
 import simulation
 
 
-def plot_kde(data, cols, per, target, lab):
+def plot_kde(data, cols, per, target, lab=None):
     fig, ax = plt.subplots()
     for col in cols:
         ax = sns.kdeplot(data[data[per] == col][target], shade=True, label=col)
@@ -11,6 +11,8 @@ def plot_kde(data, cols, per, target, lab):
     ax.legend(frameon=False)
     ax.set_title(lab)
     plt.show()
+    if not lab:
+        lab = target
     fig.savefig(f"results/{lab.replace(' ', '_')}.png")
     fig.savefig(f"results/{lab.replace(' ', '_')}.pdf")
 
@@ -21,15 +23,14 @@ def plotting(data, col1='w_avg_dice', col2='o_avg_dice', choice='strategy'):
     for key in colors.keys():
         ax.scatter(x=col1, y=col2, c=colors[key],
                    data=data.loc[data[choice] == key], alpha=min(1/len(data)*15000, 1), marker='.',
-                   s=min(1/len(data)*90000, 2), label=key)
-
+                   s=min(1/len(data)*90000, 2), label=key, )
     horizontal = min(data[col1]), max(data[col1])
     vertical = min(data[col2]), max(data[col2])
 
     ax.plot([horizontal[0], horizontal[1]], [0, 0], c='black', alpha=.5)
     ax.plot([0, 0], [vertical[0], vertical[1]], c='black', alpha=.5)
 
-    ax.legend(frameon=False, markerscale=20)
+    ax.legend(frameon=False, markerscale=5)
 
     ls = [x.replace('_', ' ').replace('o', "Other players'").replace('w', 'Winner').replace('avg', 'average')
           for x in [col1, col2]]
@@ -54,17 +55,18 @@ if __name__ == '__main__':
     m = 100000
     gen = False
     c = simulation.main(m, gen)
+    # plotting(c)
     # plotting(c[c.tie], col2='2nd_avg_dice')
     # plotting(c[c.tie == False], col2='2nd_avg_dice')
-    p = 'strategy'
-    cs = ['sensible', 'minimalist', 'blitz']
+    # p = 'strategy'
+    # cs = ['sensible', 'minimalist', 'blitz']
     # t = 'n_countries'
-    # plot_kde(c, cs, p, t, 'Number of countries at end of simulation for each strategy')
-    t = 'o_avg_dice'
-    plot_kde(c, cs, p, t, 'Other players average dice for each strategy')
-    t = 'w_avg_dice'
-    plot_kde(c, cs, p, t, 'Winner average dice for each strategy')
-    p = 'goal'
-    cs = ['territory18', 'territory24', 'continent', 'destroy']
-    t = 'n_countries'
-    plot_kde(c, cs, p, t, 'Number of countries at end of simulation for each goal')
+    # plot_kde(c, cs, p, t)
+    # t = 'o_avg_dice'
+    # plot_kde(c, cs, p, t)
+    # t = 'w_avg_dice'
+    # plot_kde(c, cs, p, t)
+    # p = 'goal'
+    # cs = ['territory18', 'territory24', 'continent', 'destroy']
+    # t = 'n_countries'
+    # plot_kde(c, cs, p, t, 'n_countries_goal')
