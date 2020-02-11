@@ -23,7 +23,7 @@ def plotting(n):
 
 
 if __name__ == '__main__':
-    m = 2000
+    m = 5000
     out = probs(m)
     for k in out.keys():
         print(k, f'{out[k]:.4f}')

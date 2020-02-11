@@ -11,7 +11,7 @@ def main(n=100000, generate=False):
     plot_analysis.plotting(c)
 
     # Plotting Figure 2nd avg dice
-    plot_analysis.plotting(c[c.tie], col2='2nd_avg_dice')
+    # plot_analysis.plotting(c[c.tie], col2='2nd_avg_dice')
 
     # Plotting Figure tie=False and 2nd ave dice
     plot_analysis.plotting(c[c.tie == False], col2='2nd_avg_dice')

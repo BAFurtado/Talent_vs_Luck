@@ -49,7 +49,7 @@ def main(n=10000, generate=True):
         c[['n_countries', 'o_avg_dice', 'w_avg_dice', 'w_num_rolls', 'o_avg_num_rolls', '2nd_avg_dice',
            '2nd_num_rolls', 'n_players_end', 'n_changed_goals']].astype('float')
     s = summary(c)
-    print(s)
+    # print(s)
     return c
 
 
