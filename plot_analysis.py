@@ -16,15 +16,15 @@ def plot_kde(data, cols, per, target, vline=False, lab=None):
     # ax.set_title(lab)
     plt.show()
     fig.savefig(f"results/{lab.replace(' ', '_')}.png")
-    fig.savefig(f"results/{lab.replace(' ', '_')}.pdf")
+    # fig.savefig(f"results/{lab.replace(' ', '_')}.pdf")
 
 
-def plotting(data, col1='w_avg_dice', col2='o_avg_dice', choice='strategy'):
+def plotting(data, col1='w_avg_dice', col2='o_avg_dice', choice='strategy', tie=False):
     fig, ax = plt.subplots()
     colors = {'blitz': 'blue', 'minimalist': 'red', 'sensible': 'green'}
     for key in colors.keys():
         ax.scatter(x=col1, y=col2, c=colors[key],
-                   data=data.loc[data[choice] == key], marker='.',
+                   data=data.loc[data[choice] == key], alpha=min(1/len(data)*15000, 1), marker='.',
                    s=min(1/len(data)*90000, 2), label=key, )
     horizontal = min(data[col1]), max(data[col1])
     vertical = min(data[col2]), max(data[col2])
@@ -32,7 +32,9 @@ def plotting(data, col1='w_avg_dice', col2='o_avg_dice', choice='strategy'):
     ax.plot([horizontal[0], horizontal[1]], [0, 0], c='black', lw=2, alpha=.5)
     ax.plot([0, 0], [vertical[0], vertical[1]], c='black', lw=2, alpha=.5)
 
-    ax.legend(frameon=False, markerscale=5, fontsize='x-large')
+    leg = ax.legend(frameon=False, markerscale=5, fontsize='x-large', loc='upper right')
+    for lh in leg.legendHandles:
+        lh.set_alpha(1)
 
     ls = [x.replace('_', ' ').replace('o', "Other players'").replace('w', 'Winner').replace('avg', 'average')
           for x in [col1, col2]]
@@ -48,8 +50,8 @@ def plotting(data, col1='w_avg_dice', col2='o_avg_dice', choice='strategy'):
     plt.tick_params(axis='both', which='both', bottom=True, top=False,
                     labelbottom=True, left=False, right=False, labelleft=True)
 
-    plt.savefig('results/{}_{}.png'.format(col1, col2), bbox_inches='tight')
-    plt.savefig('results/{}_{}.pdf'.format(col1, col2), bbox_inches='tight')
+    plt.savefig('results/png/{}_{}_{}.png'.format(col1, col2, tie), bbox_inches='tight')
+    plt.savefig('results/pdf/{}_{}.pdf'.format(col1, col2), bbox_inches='tight')
     plt.show()
 
 

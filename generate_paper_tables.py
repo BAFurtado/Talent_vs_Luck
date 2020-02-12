@@ -24,6 +24,18 @@ def main(n=100000, generate=False):
     print('Table III -- Number of wins by goals')
     c4 = c.groupby('goal').agg('count').iloc[:, 0]
     print(c4)
+
+    # Table4 -- Luck
+    print('______________________________________________________')
+    print('Table IV -- Luck')
+    print(c[['w_avg_dice', '2nd_avg_dice', 'o_avg_dice']].median())
+    print(c.groupby(by='tie').agg('median')[['w_avg_dice', '2nd_avg_dice', 'o_avg_dice']])
+    print(c.groupby(by='strategy').agg('median')[['w_avg_dice', '2nd_avg_dice', 'o_avg_dice']])
+
+    # Table5 -- Luck by strategy and tie
+    print('______________________________________________________')
+    print('Table V')
+    print(c.groupby(by=['tie', 'strategy']).agg('median')[['w_avg_dice', '2nd_avg_dice', 'o_avg_dice']])
     return c
 
 
