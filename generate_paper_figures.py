@@ -20,22 +20,22 @@ def main(n=100000, generate=False):
     cs = ['sensible', 'minimalist', 'blitz']
     t = 'n_countries'
 
-    # Plotting strategy agains num_countries
+    # Plotting strategy against num_countries
     plot_analysis.plot_kde(c, cs, p, t)
 
     t = 'o_avg_dice'
     # Plotting strategy agains other dice
-    plot_analysis.plot_kde(c, cs, p, t)
+    plot_analysis.plot_kde(c, cs, p, t, True)
 
     t = 'w_avg_dice'
     # Plotting strategy agains avg_dice
-    plot_analysis.plot_kde(c, cs, p, t)
+    plot_analysis.plot_kde(c, cs, p, t, True)
 
     p = 'goal'
     cs = ['territory18', 'territory24', 'continent', 'destroy']
     t = 'n_countries'
     # Plotting goal against num_countries
-    plot_analysis.plot_kde(c, cs, p, t, 'n_countries_goal')
+    plot_analysis.plot_kde(c, cs, p, t)
 
 
 if __name__ == '__main__':

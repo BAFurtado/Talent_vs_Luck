@@ -19,6 +19,13 @@ def main(n=100000, generate=False):
     print(c3)
     print(c3.groupby(level=[0]).sum())
 
+    # Table3
+    print('______________________________________________________')
+    print('Table III -- Number of wins by goals')
+    c4 = c.groupby('goal').agg('count').iloc[:, 0]
+    print(c4)
+    return c
+
 
 if __name__ == '__main__':
-    main()
+    df = main()
