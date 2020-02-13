@@ -36,6 +36,12 @@ def main(n=100000, generate=False):
     print('______________________________________________________')
     print('Table V')
     print(c.groupby(by=['tie', 'strategy']).agg('median')[['w_avg_dice', '2nd_avg_dice', 'o_avg_dice']])
+
+    # Table6 Resilience and Opportunity
+    print('______________________________________________________')
+    print('Table VI')
+    print(c.groupby(by=['strategy', 'tie']).agg(['count', 'median'])[['w_num_rolls', 'o_avg_num_rolls',
+                                                                      'w_avg_dice', 'o_avg_dice']])
     return c
 
 
