@@ -80,7 +80,10 @@ def process_output(world):
     return results
 
 
-def main(num_players, animate):
+def main(num_players, animate, process=True):
+    """ This creates one game and processes the results
+        It returns the processed dictionary and the actual world object
+        """
     w = gen_world(num_players)
     if animate:
         w.log = logging.getLogger(__name__)
@@ -95,7 +98,9 @@ def main(num_players, animate):
             w.play_turn()
     if animate:
         return w
-    return process_output(w), w
+    if process:
+        return process_output(w), w
+    return w
 
 
 if __name__ == '__main__':

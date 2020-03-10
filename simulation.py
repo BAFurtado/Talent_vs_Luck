@@ -1,3 +1,7 @@
+""" This module runs successively game turns
+"""
+
+
 import pickle
 
 import pandas as pd
@@ -6,13 +10,18 @@ import game_on
 
 
 def statistics(n):
+    """ This function calls individual games up to N
+        and organizes the dictionaries in DataFrame lines
+        :param n: number of times to run individual games
+        :returns DataFrame with processed results
+    """
     goals = defaultdict(int)
     output = pd.DataFrame(columns=['tie', 'strategy', 'goal', 'n_countries', 'o_avg_dice',
                                    'w_avg_dice', 'w_num_rolls', 'o_avg_num_rolls',
                                    '2nd_avg_dice', '2nd_num_rolls', 'n_players_end', 'n_changed_goals'])
     for i in range(n):
         print(f'Game {i}')
-        # Results of game_on come as a dictionary
+        # Results of game_on come as a dictionary and the actual world object
         results, world = game_on.main(6, False)
         output.loc[i, ] = results
         for p in world.players:

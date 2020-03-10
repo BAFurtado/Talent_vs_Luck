@@ -11,9 +11,9 @@ To run the game and see a simulation, do:
 
 `python game_on.py`
 
-To run the game a number of time and record the results, do:
+To run the game a number of times and record the results, do:
 
-`python strategies.py`
+`python simulation.py`
 
 You can adjust the number of times to run {m}. It takes only a matter of minutes to run 100,000 times.
 
