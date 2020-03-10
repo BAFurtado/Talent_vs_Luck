@@ -2,6 +2,7 @@ import logging
 
 import matplotlib.pyplot as plt
 import networkx as nx
+import pandas as pd
 from matplotlib import animation
 from numpy import random
 
@@ -47,12 +48,38 @@ def animating(world):
     plt.show()
 
 
+def process_regression(world, game_number=0):
+    data = pd.DataFrame(columns=['success', 'strategy', 'luck', 'goal', 'context', 'tie', 'opportunity'])
+    if world.winner == 'Tie':
+        tie = 1
+        world = tie_winner(world)
+    else:
+        tie = 0
+    for i, p in enumerate(world.players):
+        if p is world.winner:
+            data.loc[i, 'success'] = 1
+        else:
+            data.loc[i, 'success'] = 0
+        data.loc[i, 'strategy'] = p.strategy
+        data.loc[i, 'luck'] = sum(p.dice) / len(p.dice)
+        data.loc[i, 'goal'] = p.goal.type
+        data.loc[i, 'context'] = game_number
+        data.loc[i, 'tie'] = tie
+        data.loc[i, 'opportunity'] = len(p.dice)
+    return data, world
+
+
+def tie_winner(world):
+    # If there is a tie winner is the country with highest number of countries
+    len_c = max([len(p.my_countries) for p in world.players])
+    world.winner = [p for p in world.players if len(p.my_countries) == len_c][0]
+    return world
+
+
 def process_output(world):
     results = dict()
     if world.winner == 'Tie':
-        # If there is a tie winner is the country with highest number of countries
-        len_c = max([len(p.my_countries) for p in world.players])
-        world.winner = [p for p in world.players if len(p.my_countries) == len_c][0]
+        world = tie_winner(world)
         results['tie'] = True
     else:
         results['tie'] = False
@@ -77,12 +104,15 @@ def process_output(world):
         results['2nd_num_rolls'] = None
     results['n_players_end'] = len([p for p in world.players if p.playing])
     results['n_changed_goals'] = world.changed_goal
-    return results
+    return results, world
 
 
-def main(num_players, animate, process=True):
+# Changes have been made to this function. Using for older purposes should change process_dataframe to True
+# and process_reg to False. For the paper, use the release version on GitHub.
+def main(num_players, animate, process_dataframe=False, process_reg=True):
     """ This creates one game and processes the results
         It returns the processed dictionary and the actual world object
+        Also, now with the possibility of processing data for the regression
         """
     w = gen_world(num_players)
     if animate:
@@ -93,19 +123,20 @@ def main(num_players, animate, process=True):
     # number of frames in animation determines number of runs of 'world.play_run'
     if animate:
         animating(w)
+        return w
     else:
         while w.on:
             w.play_turn()
-    if animate:
-        return w
-    if process:
-        return process_output(w), w
+    if process_dataframe:
+        return process_output(w)
+    if process_reg:
+        return process_regression(w)
     return w
 
 
 if __name__ == '__main__':
-    anim = True
-    w = main(6, anim)
+    anim = False
+    d, w = main(6, anim, process_dataframe=False, process_reg=True)
     # for p in w.players:
     #     print(f'{sum(p.dice)/len(p.dice):.4f}, {len(p.dice)}, '
     #           f'{len(p.my_countries)}, {p.name}, {p.strategy}, {p.goal.type}')

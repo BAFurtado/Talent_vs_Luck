@@ -1,14 +1,22 @@
 
-import simulation
-import pandas as pd
 import matplotlib.pyplot as plt
+import pandas as pd
 from sklearn.linear_model import LinearRegression
-from sklearn.metrics import mean_squared_error, r2_score
-import numpy as np
+from sklearn.metrics import r2_score
+
+import game_on
+import simulation
 
 
-def prepare_data(data):
-    pass
+def prepare_data(n):
+    data = pd.DataFrame(columns=['success', 'strategy', 'luck', 'goal', 'context', 'tie', 'opportunity'])
+    for i in range(n):
+        print(f'Game {i}')
+        # Results of game_on for regression come as a DataFrame
+        game_data, world = game_on.main(6, False, process_dataframe=False, process_reg=True)
+        game_data['context'] = i
+        data = pd.concat([data, game_data], ignore_index=True)
+    return data
 
 
 def regress(X, y):
@@ -30,4 +38,4 @@ def regress(X, y):
 
 
 if __name__ == "__main__":
-    data = simulation.main(100, True)
+    d = prepare_data(5)
