@@ -1,15 +1,14 @@
-
-import matplotlib.pyplot as plt
-import pandas as pd
-from sklearn.linear_model import LogisticRegression
-from sklearn.metrics import r2_score
+import os
 import pickle
+
+import pandas as pd
+import statsmodels.api as sm
 
 import game_on
 
 
 def get_data(n, generate=True):
-    if generate:
+    if generate or not os.path.exists(f'results/reg_{n}'):
         data = pd.DataFrame(columns=['success', 'strategy', 'luck', 'goal', 'context', 'tie', 'opportunity'])
         for i in range(n):
             print(f'Game {i}')
@@ -32,32 +31,26 @@ def prepare_data(data):
     # For Strategy: Base is Minimalist.
     # For Goal: Base is Territory18.
     # Getting ALL of the contexts using iloc
-    x = pd.concat([dummies[['strategy_blitz', 'strategy_sensible', 'goal_continent', 'goal_territory24',
-                            'goal_destroy']], data.tie, data.opportunity, data.luck, dummies.iloc[:, 10:]], axis=1)
-    return x.to_numpy(), y.to_numpy(), x.columns
+    include = ['strategy_blitz', 'strategy_sensible', 'goal_continent', 'goal_territory24', 'goal_destroy']
+    context = [col for col in dummies if col.startswith('context')]
+    x = pd.concat([data.luck, dummies[include], dummies[context]], axis=1)
+    return x, y
 
 
-def regress(x, y, cols):
-    lm = LogisticRegression(solver='lbfgs')
-    lm.fit(x, y)
-
-    # Inputs are y and fitted model predict(x)
-    for i in range(8):
-        print('{} coefficient is {:.4}'.format(cols[i], lm.coef_[0][i]))
-
-    print('R2 score {:.4}'.format(r2_score(y, lm.predict(x))))
+def regress(x, y):
+    lm = sm.Logit(y, x)
+    result = lm.fit()
+    print(result.summary2())
 
     # Plotting
     # for i in range(len(cols)):
     #     plt.scatter(x[i], y, label=cols[i])
     #     plt.show()
-    # print(lm)
-
     return lm
 
 
 if __name__ == "__main__":
-    gen = True
-    d = get_data(1000)
-    X, Y, C = prepare_data(d)
-    reg = regress(X, Y, C)
+    gen = False
+    d = get_data(10000, gen)
+    X, Y = prepare_data(d)
+    reg = regress(X, Y)
