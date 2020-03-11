@@ -39,11 +39,15 @@ def run_classifiers(x, xt, y, yt):
     return models
 
 
-if __name__ == '__main__':
+def basics():
     # Get data, train, test
     gen = False
     d = regression.get_data(10000, gen)
     X, Y, C = regression.prepare_data(d)
     X_train, X_test, y_train, y_test = hp.divide_data(X, Y)
-    X_train, X_test = hp.normalize_trial(X_train, X_test)
+    return X_train, X_test, y_train, y_test
+
+
+if __name__ == '__main__':
+    X_train, X_test, y_train, y_test = basics()
     c, e, f, g = run_classifiers(X_train, X_test, y_train, y_test)
