@@ -1,12 +1,13 @@
 """ Experimenting with some models, def 'run_classifier' adapted from
 http://scikit-learn.org/stable/auto_examples/ensemble/plot_voting_decision_regions.html
 """
+import pandas as pd
+from sklearn import preprocessing
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.ensemble import VotingClassifier
 from sklearn.metrics import confusion_matrix
 from sklearn.neural_network import MLPClassifier
 from sklearn.svm import SVC
-import pandas as pd
 
 import regression
 import utils.machine_learning_helpers as hp
@@ -38,21 +39,26 @@ def run_classifiers(x, xt, y, yt, cols):
         print('Confusion Matrix {}:\n {}.'.format(key, cm))
 
     # Call Tree results
-    feat1 = features(m1, cols)
-    feat2 = features(m3, cols)
+    feat1 = features(m1, cols, fores=True)
+    feat2 = features(m3, cols, sv=True)
     # Returns a dictionary of models' names and the model itself
     return cls, feat1, feat2
 
 
-def features(forest, cols, fores=True):
+def features(forest, cols, fores=False, sv=False):
     if fores:
         feat = forest.feature_importances_
+        feature = pd.DataFrame(feat,
+                               index=cols,
+                               columns=['importance']).sort_values('importance', ascending=False)
     # Else is SVM
-    else:
+    if sv:
         feat = forest.coef_
-    feature = pd.DataFrame(feat,
-                           index=cols,
-                           columns=['importance']).sort_values('importance', ascending=False)
+        feat = pd.DataFrame(feat.T, columns=['importance'])
+        feat = (feat['importance'] + feat['importance'].min() * -1).to_frame()
+        feat = (feat.importance / feat.importance.max()).to_frame()
+        feature = (feat.importance/sum(feat.importance)).to_frame()
+        feature.index = cols
     print(feature.head(8))
     return feature
 
@@ -60,7 +66,7 @@ def features(forest, cols, fores=True):
 def basics():
     # Get data, train, test
     gen = False
-    d = regression.get_data(1000, gen)
+    d = regression.get_data(100, gen)
     X, Y, cols = regression.prepare_data(d, machine=True)
     X_train, X_test, y_train, y_test = hp.divide_data(X, Y)
     return X_train, X_test, y_train, y_test, cols
