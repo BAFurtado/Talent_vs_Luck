@@ -16,14 +16,14 @@ def run_classifiers(x, xt, y, yt, cols):
     models = ['Tree', 'SVC', 'MPL', 'Voting']
 
     m1 = RandomForestClassifier(n_estimators=10000, criterion='gini', bootstrap=True, max_depth=15)
-    # m3 = SVC(C=1, kernel='poly', degree=3, probability=True)
-    # m4 = MLPClassifier(solver='lbfgs', early_stopping=True, activation='tanh', max_iter=2000)
-    # voting = VotingClassifier(estimators=[('dt', m1), ('svc', m3), ('neural', m4)],
-    #                           voting='soft')
+    m3 = SVC(C=1, kernel='linear', degree=3, probability=True)
+    m4 = MLPClassifier(solver='lbfgs', early_stopping=True, activation='tanh', max_iter=2000)
+    voting = VotingClassifier(estimators=[('dt', m1), ('svc', m3), ('neural', m4)],
+                              voting='soft')
 
     # Fitting models
-    # cls = [m1, m3, m4, voting]
-    cls = [m1]
+    cls = [m1, m3, m4, voting]
+    # cls = [m1]
     for each in cls:
         each.fit(x, y)
 
@@ -38,13 +38,19 @@ def run_classifiers(x, xt, y, yt, cols):
         print('Confusion Matrix {}:\n {}.'.format(key, cm))
 
     # Call Tree results
-    feat = features(m1, cols)
+    feat1 = features(m1, cols)
+    feat2 = features(m3, cols)
     # Returns a dictionary of models' names and the model itself
-    return cls, feat
+    return cls, feat1, feat2
 
 
-def features(forest, cols):
-    feature = pd.DataFrame(forest.feature_importances_,
+def features(forest, cols, fores=True):
+    if fores:
+        feat = forest.feature_importances_
+    # Else is SVM
+    else:
+        feat = forest.coef_
+    feature = pd.DataFrame(feat,
                            index=cols,
                            columns=['importance']).sort_values('importance', ascending=False)
     print(feature.head(8))
@@ -55,11 +61,11 @@ def basics():
     # Get data, train, test
     gen = False
     d = regression.get_data(1000, gen)
-    X, Y, cols = regression.prepare_data(d)
+    X, Y, cols = regression.prepare_data(d, machine=True)
     X_train, X_test, y_train, y_test = hp.divide_data(X, Y)
     return X_train, X_test, y_train, y_test, cols
 
 
 if __name__ == '__main__':
     X_train, X_test, y_train, y_test, C = basics()
-    l_models, f = run_classifiers(X_train, X_test, y_train, y_test, C)
+    l_models, f1, f2 = run_classifiers(X_train, X_test, y_train, y_test, C)
