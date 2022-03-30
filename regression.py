@@ -34,7 +34,7 @@ def prepare_data(data):
     include = ['strategy_blitz', 'strategy_sensible', 'goal_continent', 'goal_territory24', 'goal_destroy']
     context = [col for col in dummies if col.startswith('context')]
     x = pd.concat([data.luck, dummies[include], dummies[context]], axis=1)
-    return x, y
+    return x.to_numpy(), y.to_numpy()
 
 
 def regress(x, y):
